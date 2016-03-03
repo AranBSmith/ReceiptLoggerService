@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan({"controllers", "application", "services", "dao"})
 @EnableAutoConfiguration
 public class Application extends SpringBootServletInitializer {
-//test
+
     public static void main(String[] args) {
         SpringApplication.run(applicationClass, args);
     }
