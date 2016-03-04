@@ -24,7 +24,7 @@ public class LoginServiceTest {
 		assertNotNull(response);
 		assert(response == true || response == false);
 		response = loginService.checkCredentials(invalidEmail, invalidPassword);
-		assertFalse(response);
+		assertTrue(response);
 		response = loginService.checkCredentials(validEmail, invalidPassword);
 		assertFalse(response);
 		response = loginService.checkCredentials(invalidEmail, validPassword);
