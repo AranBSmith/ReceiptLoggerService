@@ -26,7 +26,7 @@ public class LoginServiceTest {
 		response = loginService.checkCredentials(invalidEmail, invalidPassword);
 		assertFalse(response);
 		response = loginService.checkCredentials(validEmail, invalidPassword);
-		assertTrue(response);
+		assertFalse(response);
 		response = loginService.checkCredentials(invalidEmail, validPassword);
 		assertFalse(response);
 	}
