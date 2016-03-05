@@ -13,7 +13,9 @@ import services.LoginService;
 public class LoginController {
 	private LoginService loginService;
 	
-	public LoginController(){}
+	public LoginController(){
+		loginService = new LoginService();
+	}
 	
 	@RequestMapping("/login")
     public LoginResponse login(

@@ -1,14 +1,15 @@
 package services;
 
 import dao.Cassandra;
+import lombok.Data;
 import model.LoginResponse;
 
+@Data
 public class LoginService {
 	
 	private Cassandra cassandraAccess;
     private EmailService emailService;
     private LoginResponse loginResponse;
-    private static final String TAG = "LoginService";
     
 	public LoginService(){
 		 cassandraAccess = new Cassandra();
@@ -18,10 +19,18 @@ public class LoginService {
 
 	public LoginResponse checkCredentials(String email, String password) {
 		// verify if email is of a valid format.
-        boolean validEmail = emailService.isValidEmailAddress(email);
-        if(email.equals("") || password.equals("") || !validEmail ){
+        boolean validEmail = false;
+        validEmail = emailService.isValidEmailAddress(email);
+        if(
+        		email == null 
+        		|| password == null
+        		|| email.equals("") 
+        		|| password.equals("") 
+        		|| !validEmail ){
+        	
         	loginResponse.setResponse("invalid");
             return loginResponse;
+            
         } else {
             if(cassandraAccess.login(email, password)){
             	loginResponse.setResponse("valid");
@@ -29,7 +38,7 @@ public class LoginService {
             	loginResponse.setResponse("invalid");
             }
         }
-        System.out.println("login Response is: " + loginResponse.getResponse());
+        // System.out.println("login Response is: " + loginResponse.getResponse());
         return loginResponse;
 	}
 }
