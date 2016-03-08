@@ -12,7 +12,7 @@ import model.ExpenseSubmissionResponse;
 import services.ExpenseSubmissionService;
 
 @RestController
-public class ExpenseController {
+public class SubmitExpenseController {
 	
 	ExpenseSubmissionService expenseSubmissionService;
 	Expense expense;
