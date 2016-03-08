@@ -3,6 +3,7 @@ package controllers;
 import java.util.Date;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,7 @@ public class ExpenseController {
 	ExpenseSubmissionService expenseSubmissionService;
 	Expense expense;
 	
-	@RequestMapping("/submitExpense")
+	@RequestMapping(value = "/submitExpense", method=RequestMethod.POST)
 	public ExpenseSubmissionResponse expenseSubmission(
 			@RequestParam(value="email") String email,
 			@RequestParam(value="category") String category,
