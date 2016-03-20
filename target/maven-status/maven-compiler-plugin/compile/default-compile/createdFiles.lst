@@ -1,8 +1,11 @@
 application\OtherGreetingController.class
 application\Greeting.class
 model\LoginResponse.class
+controllers\ExpenseController.class
 controllers\LoginController.class
 services\EmailService.class
 dao\Cassandra.class
 services\LoginService.class
+model\ExpenseSubmissionResponse.class
 application\Application.class
+model\Expense.class

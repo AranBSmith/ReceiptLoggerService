@@ -1,2 +1,5 @@
-services\EmailServiceTest.class
+controllers\LoginControllerTest.class
 services\LoginServiceTest.class
+controllers\ExpenseControllerTest.class
+dao\CassandraTest.class
+services\EmailServiceTest.class
