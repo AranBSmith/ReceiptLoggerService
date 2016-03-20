@@ -25,7 +25,7 @@ public class UserCredentialSubmissionControllerTest {
 		userCredentials.put("anemail@adomain.com","anotherpassword");
 
 		credService = new CredentialsService();
-		when(credService.submitCredentials(userCredentials)).thenReturn(true);
+		// when(credService.submitCredentials(userCredentials)).thenReturn(true);
 		
 		userCredSub = new UserCredentialSubmissionController();
 		userCredSub.setCredService(credService);
