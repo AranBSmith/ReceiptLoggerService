@@ -1,18 +1,18 @@
 package services;
 
-import dao.Cassandra;
+import dao.UserDAO;
 import lombok.Data;
 import model.LoginResponse;
 
 @Data
 public class LoginService {
 	
-	private Cassandra cassandraAccess;
+	private UserDAO userLogin;
     private EmailService emailService;
     private LoginResponse loginResponse;
     
 	public LoginService(){
-		 cassandraAccess = new Cassandra();
+		 userLogin = new UserDAO();
 	     emailService = new EmailService();
 	     loginResponse = new LoginResponse();
 	}
@@ -32,7 +32,7 @@ public class LoginService {
             return loginResponse;
             
         } else {
-            if(cassandraAccess.login(email, password)){
+            if(userLogin.login(email, password)){
             	loginResponse.setResponse("valid");
             } else{
             	loginResponse.setResponse("invalid");

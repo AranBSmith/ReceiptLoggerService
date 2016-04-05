@@ -1,7 +1,5 @@
 package controllers;
 
-import java.util.Date;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,13 +16,17 @@ public class SubmitExpenseController {
 	Expense expense;
 	
 	@RequestMapping(value = "/submitExpense", method=RequestMethod.POST)
-	public ExpenseSubmissionResponse expenseSubmission(
+	public boolean expenseSubmission(
 			@RequestParam(value="email") String email,
+			@RequestParam(value="price") int price,
+			@RequestParam(value="currency") String currency,
 			@RequestParam(value="category") String category,
-			@RequestParam(value="date") Date date,
-			@RequestParam(value="expenseimage") byte[] expenseImageData){
+			@RequestParam(value="date") String date,
+			@RequestParam(value="description") String description,
+			@RequestParam(value="expenseimage") byte[] expenseImageData,
+			@RequestParam(value="approved") boolean approved){
 		
-		expense = new Expense(email, category, date, expenseImageData);
+		expense = new Expense(email, price, currency, category, date, description, expenseImageData, approved);
 		
 		return expenseSubmissionService.submitExpense(expense);
 	}

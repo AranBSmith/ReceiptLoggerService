@@ -8,13 +8,13 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
-import dao.Cassandra;
+import dao.UserDAO;
 import model.LoginResponse;
 
 public class LoginServiceTest {
-	LoginService loginService; 
+	UserDAO userDAO;
 	String validEmail, validPassword, invalidEmail, invalidPassword;
-	Cassandra cassandra;
+	LoginService loginService;
 	EmailService emailService;
 	LoginResponse validLoginResponse, invalidLoginResponse, resultLoginResponse;
 	
@@ -30,12 +30,12 @@ public class LoginServiceTest {
 		invalidEmail = "aran";
 		invalidPassword = "";
 		
-		cassandra = mock(Cassandra.class);
-		when(cassandra.login(validEmail, validPassword)).thenReturn(true);
-		when(cassandra.login(invalidEmail, validPassword)).thenReturn(false);
-		when(cassandra.login(validEmail, invalidPassword)).thenReturn(false);
-		when(cassandra.login(invalidEmail, invalidPassword)).thenReturn(false);
-		when(cassandra.login(null, null)).thenReturn(false);
+		userDAO = mock(UserDAO.class);
+		when(userDAO.login(validEmail, validPassword)).thenReturn(true);
+		when(userDAO.login(invalidEmail, validPassword)).thenReturn(false);
+		when(userDAO.login(validEmail, invalidPassword)).thenReturn(false);
+		when(userDAO.login(invalidEmail, invalidPassword)).thenReturn(false);
+		when(userDAO.login(null, null)).thenReturn(false);
 		
 		emailService = mock(EmailService.class);
 		when(emailService.isValidEmailAddress(validEmail)).thenReturn(true);
@@ -43,7 +43,7 @@ public class LoginServiceTest {
 
 		
 		loginService = new LoginService();
-		loginService.setCassandraAccess(cassandra);
+		loginService.setUserLogin(userDAO);
 		loginService.setEmailService(emailService);
 	}
 	

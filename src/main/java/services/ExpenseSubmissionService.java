@@ -1,15 +1,14 @@
 package services;
 
-import dao.Cassandra;
+import dao.ExpenseDAO;
 import model.Expense;
-import model.ExpenseSubmissionResponse;
 
 public class ExpenseSubmissionService {
 
-	Cassandra cassandra;
+	ExpenseDAO expenseDAO;
 	
-	public ExpenseSubmissionResponse submitExpense(Expense expense) {
-		return cassandra.submitExpense(expense);
+	public boolean submitExpense(Expense expense) {
+		return expenseDAO.insertExpense(expense);
 	}
 	
 }
