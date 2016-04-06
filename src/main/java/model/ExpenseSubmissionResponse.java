@@ -1,5 +1,10 @@
 package model;
 
+import lombok.Data;
+
+@Data
 public class ExpenseSubmissionResponse {
-	int code;
+	public ExpenseSubmissionResponse(){}
+	
+	private String response;
 }

@@ -16,7 +16,7 @@ public class SubmitExpenseController {
 	Expense expense;
 	
 	@RequestMapping(value = "/submitExpense", method=RequestMethod.POST)
-	public boolean expenseSubmission(
+	public ExpenseSubmissionResponse expenseSubmission(
 			@RequestParam(value="email") String email,
 			@RequestParam(value="price") int price,
 			@RequestParam(value="currency") String currency,
@@ -28,6 +28,14 @@ public class SubmitExpenseController {
 		
 		expense = new Expense(email, price, currency, category, date, description, expenseImageData, approved);
 		
-		return expenseSubmissionService.submitExpense(expense);
+		ExpenseSubmissionResponse expenseSubmissionResponse = new ExpenseSubmissionResponse();
+		
+		if(expenseSubmissionService.submitExpense(expense)) {
+			expenseSubmissionResponse.setResponse("valid");
+		} else {
+			expenseSubmissionResponse.setResponse("invalid");
+		}
+		
+		return expenseSubmissionResponse;
 	}
 }
