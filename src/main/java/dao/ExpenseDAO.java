@@ -21,10 +21,10 @@ public class ExpenseDAO extends DAO {
 				"(email, price, expenseDate, currency, category_fk, "
 				+ "imageDirectory, descriptionDirectory, approval) "
 				+ "VALUES (?, ?, STR_TO_DATE(?, '%m/%d/%Y'), ?, ?, ?, ?, ?)";
+		
 		Connection conn = null;
-		
-		
 		int count = 0;
+		
 		try {
 			conn = dataSource.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);

@@ -35,7 +35,6 @@ public class SubmitExpenseController {
 		} else {
 			expenseSubmissionResponse.setResponse("invalid");
 		}
-		
 		return expenseSubmissionResponse;
 	}
 }
