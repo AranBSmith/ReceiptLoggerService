@@ -43,7 +43,8 @@ public class UserDAO extends DAO {
 			loginResponse.setResponse(e.getMessage() + " " + e.getSQLState());
 			return loginResponse;
 		} catch (NullPointerException e){
-			loginResponse.setResponse(e.getMessage());
+			loginResponse.setResponse("There was a null pointer exception when trying to interact with the DB"
+					+ "" + e.getMessage() + " " + e.toString());
 			return loginResponse;
 		}
 		finally{
