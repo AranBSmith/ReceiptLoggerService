@@ -26,16 +26,17 @@ public class LoginServiceTest {
 		invalidLoginResponse.setResponse("invalid");
 		
 		validEmail = "aran.smith47@mail.dcu.ie";
-		validPassword = "password";
+		validPassword = "apassword";
 		invalidEmail = "aran";
 		invalidPassword = "";
 		
+		
 		userDAO = mock(UserDAO.class);
-		when(userDAO.login(validEmail, validPassword)).thenReturn(true);
-		when(userDAO.login(invalidEmail, validPassword)).thenReturn(false);
-		when(userDAO.login(validEmail, invalidPassword)).thenReturn(false);
-		when(userDAO.login(invalidEmail, invalidPassword)).thenReturn(false);
-		when(userDAO.login(null, null)).thenReturn(false);
+		when(userDAO.login(validEmail, validPassword)).thenReturn(validLoginResponse);
+		when(userDAO.login(invalidEmail, validPassword)).thenReturn(invalidLoginResponse);
+		when(userDAO.login(validEmail, invalidPassword)).thenReturn(invalidLoginResponse);
+		when(userDAO.login(invalidEmail, invalidPassword)).thenReturn(invalidLoginResponse);
+		when(userDAO.login(null, null)).thenReturn(invalidLoginResponse);
 		
 		emailService = mock(EmailService.class);
 		when(emailService.isValidEmailAddress(validEmail)).thenReturn(true);

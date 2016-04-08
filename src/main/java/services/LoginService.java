@@ -32,13 +32,7 @@ public class LoginService {
             return loginResponse;
             
         } else {
-            if(userLogin.login(email, password)){
-            	loginResponse.setResponse("valid");
-            } else{
-            	loginResponse.setResponse("invalid");
-            }
+            return userLogin.login(email, password);
         }
-
-        return loginResponse;
 	}
 }
