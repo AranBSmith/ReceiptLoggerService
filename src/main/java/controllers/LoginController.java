@@ -26,9 +26,9 @@ public class LoginController {
     		@RequestParam(value="email") String email,
     		@RequestParam(value="password") String password){
 		
-		if(email.equals("aran.smith47@mail.dcu.ie") && password.equals("apassword"))
-			return loginResponse;
+		/*if(email.equals("aran.smith47@mail.dcu.ie") && password.equals("apassword"))
+			return loginResponse;*/
 		
-		else return loginService.checkCredentials(email, password);
+		return loginService.checkCredentials(email, password);
     }
 }
