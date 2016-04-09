@@ -19,6 +19,7 @@ public class UserDAO2{
 
 	public UserDAO2(){
 		loginResponse = new LoginResponse();
+		myDatasource = null;
 		try{
 			InitialContext ic = new InitialContext();
 			Context xmlContext = (Context) ic.lookup("java:comp/env"); // thats everything from the context.xml and from the global configuration
@@ -27,39 +28,14 @@ public class UserDAO2{
 			loginResponse.setResponse(loginResponse.getResponse() + "\n" + e.getMessage());
 		}
 	}
-	
-	/*private DataSource getMySQLDataSource() {
-        Properties props = new Properties();
-        FileInputStream fis = null;
-        MysqlDataSource mysqlDS = null;
-        try {
-            fis = new FileInputStream("db.properties");
-            props.load(fis);
-            mysqlDS = new MysqlDataSource();
-            mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
-            mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
-            mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            loginResponse.setResponse(loginResponse.getResponse() + " " + e.getMessage());
-        }
-        
-        if(mysqlDS == null){
-        	//this is running on the server so we must get our configuration this way instead, as db.properties
-        	// wont exist on the server
-        	mysqlDS = ds;
-        }
-        
-        return mysqlDS;
-    }*/
-	
+
 	public LoginResponse login(String email, String password) {
+		
+		if(myDatasource!=null) loginResponse.setResponse(loginResponse.getResponse() + "\n" + "datasource was successfully initialised");
+
 		String sql = "select password from Users where email = ?";
 		
 		Connection conn = null;	
-		
-		loginResponse.setResponse(loginResponse.getResponse() + "\n" + "sql statement is: " + sql );
-		//loginResponse.setResponse(loginResponse.getResponse() + "\n" + "conn is " + conn.toString());
 		
 		try{
 			loginResponse.setResponse(loginResponse.getResponse() + "\n" + "now trying to connect");
@@ -81,8 +57,11 @@ public class UserDAO2{
 					return loginResponse;
 				}
 			}
+			
 			loginResponse.setResponse("invalid");
 			return loginResponse;
+			
+			
 		} catch(SQLException e){
 			loginResponse.setResponse(e.getMessage() + " " + e.getSQLState());
 			return loginResponse;
@@ -102,6 +81,31 @@ public class UserDAO2{
 		}
 	}
 }
+
+/*private DataSource getMySQLDataSource() {
+Properties props = new Properties();
+FileInputStream fis = null;
+MysqlDataSource mysqlDS = null;
+try {
+    fis = new FileInputStream("db.properties");
+    props.load(fis);
+    mysqlDS = new MysqlDataSource();
+    mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
+    mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
+    mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
+} catch (IOException e) {
+    e.printStackTrace();
+    loginResponse.setResponse(loginResponse.getResponse() + " " + e.getMessage());
+}
+
+if(mysqlDS == null){
+	//this is running on the server so we must get our configuration this way instead, as db.properties
+	// wont exist on the server
+	mysqlDS = ds;
+}
+
+return mysqlDS;
+}*/
 	
 
 
