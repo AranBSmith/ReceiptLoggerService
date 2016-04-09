@@ -1,35 +1,34 @@
 package dao;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
 
-import javax.annotation.Resource;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
-
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import model.LoginResponse;
 
 public class UserDAO2{
-
 	
-	@Resource(name="jdbc/ReceiptLoggerService")
-	private MysqlDataSource ds;
-	
-	private DataSource dataSource;
+	private DataSource myDatasource;
 	private LoginResponse loginResponse;
 
 	public UserDAO2(){
 		loginResponse = new LoginResponse();
-		this.dataSource = getMySQLDataSource();
+		try{
+			InitialContext ic = new InitialContext();
+			Context xmlContext = (Context) ic.lookup("java:comp/env"); // thats everything from the context.xml and from the global configuration
+			myDatasource = (DataSource) xmlContext.lookup("jdbc/ReceiptLoggerService");
+		} catch(NamingException e){
+			loginResponse.setResponse(loginResponse.getResponse() + "\n" + e.getMessage());
+		}
 	}
 	
-	private DataSource getMySQLDataSource() {
+	/*private DataSource getMySQLDataSource() {
         Properties props = new Properties();
         FileInputStream fis = null;
         MysqlDataSource mysqlDS = null;
@@ -52,7 +51,7 @@ public class UserDAO2{
         }
         
         return mysqlDS;
-    }
+    }*/
 	
 	public LoginResponse login(String email, String password) {
 		String sql = "select password from Users where email = ?";
@@ -64,7 +63,7 @@ public class UserDAO2{
 		
 		try{
 			loginResponse.setResponse(loginResponse.getResponse() + "\n" + "now trying to connect");
-			conn = dataSource.getConnection();
+			conn = myDatasource.getConnection();
 			loginResponse.setResponse(loginResponse.getResponse() + "\n" + "conn = dataSource.getConnection() intialised conn to" 
 			+ conn.toString() + " and has schema: " + conn.getSchema());
 			PreparedStatement ps = conn.prepareStatement(sql);
