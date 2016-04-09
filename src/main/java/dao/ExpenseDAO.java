@@ -55,5 +55,4 @@ public class ExpenseDAO extends DAO {
 		}
 		return false;
 	}
-
 }

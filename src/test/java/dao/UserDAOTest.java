@@ -11,22 +11,18 @@ import model.LoginResponse;
 public class UserDAOTest {
 	
 	UserDAO userDAO;
-	String email;
-	String password;
-	String notAPassword;
+	String email, password, notAPassword;
 	LoginResponse validLoginResponse, invalidLoginResponse;
 	
 	@Before
 	public void setup(){
-		
 		userDAO = new UserDAO();
 		email = "aran.smith47@mail.dcu.ie";
 		password = "apassword";
 		notAPassword = "123";
 		validLoginResponse = new LoginResponse();
-		validLoginResponse.setResponse("valid");
+		validLoginResponse.setSuccess();
 		invalidLoginResponse = new LoginResponse();
-		invalidLoginResponse.setResponse("invalid");
 	}
 	
 	@Test

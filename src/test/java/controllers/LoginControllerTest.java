@@ -20,10 +20,8 @@ public class LoginControllerTest {
 	@Before
 	public void setup(){
 		validLoginResponse = new LoginResponse();
-		validLoginResponse.setResponse("valid");
+		validLoginResponse.setSuccess();
 		invalidLoginResponse = new LoginResponse();
-		invalidLoginResponse.setResponse("invalid");
-		
 		
 		validEmail = "aran.smith47@mail.dcu.ie";
 		validPassword = "password";

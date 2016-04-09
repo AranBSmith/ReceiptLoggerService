@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.sql.DataSource;
 
+import model.CredentialSubmissionResponse;
 import model.LoginResponse;
 
 public class UserDAO extends DAO {
@@ -33,11 +35,10 @@ public class UserDAO extends DAO {
 				// there is a result, check if the password is the same.
 				String testPassword = resultSet.getString("password");
 				if (password.equals(testPassword)){
-					loginResponse.setResponse("valid");
-					return loginResponse;
+					loginResponse.setSuccess();
 				}
 			}
-			loginResponse.setResponse("invalid");
+			
 			return loginResponse;
 		} catch(SQLException e){
 			loginResponse.setResponse(e.getMessage() + " " + e.getSQLState());
@@ -56,6 +57,48 @@ public class UserDAO extends DAO {
 				} 
 			}
 		}
+	}
+	
+	public CredentialSubmissionResponse insertUserCredentials(HashMap<String,String> userCredentials) {
+
+		String sql = "INSERT INTO Users "
+				+ "(email, password) VALUES "
+				+ "(?,?)";
+		Connection conn = null;
+		int count = 0;
+		CredentialSubmissionResponse credSubResponse = new CredentialSubmissionResponse();
+		
+		try {
+			conn = dataSource.getConnection();
+		
+			for(String email : userCredentials.keySet()){
+				String password = userCredentials.get(email);
+				
+				// insert this credential pair into the database
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setString(1, email);
+				ps.setString(2, password);
+				
+				count = ps.executeUpdate(sql);
+				ps.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				if(count > 0){
+					credSubResponse.setSuccess();;
+					return credSubResponse;
+				}
+			} 
+		}
+		credSubResponse.setFail();
+		return credSubResponse;
 	}
 }
 	

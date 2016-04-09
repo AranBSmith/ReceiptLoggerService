@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.Data;
-import services.CredentialsService;
+import model.CredentialSubmissionResponse;
+import services.CredentialService;
 
 @Data
 @RestController
 public class UserCredentialSubmissionController {
 
-	CredentialsService credService;
+	CredentialService credService;
 	
 	@RequestMapping(value="credentialSubmission", method=RequestMethod.POST)
-	public boolean credentialSubmission(HashMap<String, String> userCredentials) {
-		// TODO Auto-generated method stub
+	public CredentialSubmissionResponse credentialSubmission(HashMap<String, String> userCredentials) {
 		return credService.submitCredentials(userCredentials);
 	}
 	

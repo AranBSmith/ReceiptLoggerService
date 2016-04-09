@@ -1,6 +1,7 @@
 package controllers;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +19,11 @@ public class LoginIntegrationTest {
 	
 	@Test
 	public void testIntegratedValidLogin(){
-		//assertTrue(loginController.login(email, password).getResponse().equals("valid"));
+		assertTrue(loginController.login(email, password).isSuccess());
 	}
 	
 	@Test
 	public void testIntegratedInvalidLogin(){
-		assertTrue(loginController.login(email, "").getResponse().equals("invalid"));
+		assertFalse(loginController.login(email, "").isSuccess());
 	}
 }

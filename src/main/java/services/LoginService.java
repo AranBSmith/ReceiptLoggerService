@@ -28,7 +28,6 @@ public class LoginService {
         		|| password.equals("") 
         		|| !validEmail ){
         	
-        	loginResponse.setResponse("invalid");
             return loginResponse;
             
         } else {

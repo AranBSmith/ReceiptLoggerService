@@ -24,6 +24,6 @@ public class LoginServiceIntegratedTest {
 	@Test
 	public void testIntegratedLoginService(){
 		LoginResponse result = userDAO.login(email, password);
-		assertTrue(result.getResponse().equals("valid"));
+		assertTrue(result.isSuccess());
 	}
 }

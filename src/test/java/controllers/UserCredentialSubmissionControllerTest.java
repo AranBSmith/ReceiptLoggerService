@@ -1,19 +1,22 @@
 package controllers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import services.CredentialsService;
+import model.CredentialSubmissionResponse;
+import services.CredentialService;
 
 public class UserCredentialSubmissionControllerTest {
-	UserCredentialSubmissionController userCredSub;
-	HashMap<String,String> userCredentials;
-	CredentialsService credService;
+	UserCredentialSubmissionController userCredSubController;
+	HashMap<String,String> userCredentials, badCredentialSet;
+	CredentialService credService;
+	CredentialSubmissionResponse successfulCredSubResponse;
 	
 	@Before
 	public void setup(){
@@ -21,19 +24,33 @@ public class UserCredentialSubmissionControllerTest {
 		userCredentials = new HashMap<String,String>();
 		userCredentials.put("aran.smith47@mail.dcu.ie","password");
 		userCredentials.put("anemail@adomain.com","anotherpassword");
-
-		credService = new CredentialsService();
-		// when(credService.submitCredentials(userCredentials)).thenReturn(true);
 		
-		userCredSub = new UserCredentialSubmissionController();
-		userCredSub.setCredService(credService);
+		badCredentialSet = new HashMap<String,String>();
+		badCredentialSet.put("notanemail", "");
+		badCredentialSet.put("", "password213");
+
+		successfulCredSubResponse = new CredentialSubmissionResponse();
+		successfulCredSubResponse.setSuccess();
+		
+		credService = mock(CredentialService.class);
+		when(credService.submitCredentials(userCredentials)).thenReturn(successfulCredSubResponse);
+		when(credService.submitCredentials(badCredentialSet)).thenReturn(new CredentialSubmissionResponse());
+		
+		userCredSubController = new UserCredentialSubmissionController();
+		userCredSubController.setCredService(credService);
 
 	}
 	
 	@Test
-	public void credentialSubmissionTest(){
-		boolean response = userCredSub.credentialSubmission(userCredentials);
-		assertTrue(response == true || response == false);
-		assertEquals(response, true);
+	public void validCredentialSubmissionTest(){
+		CredentialSubmissionResponse response = userCredSubController.credentialSubmission(userCredentials);
+		assertTrue(response.isSuccess() || !response.isSuccess());
+		assertEquals(response.isSuccess(), true);
+	}
+	
+	@Test
+	public void invalidCredentialSubmissionTest(){
+		CredentialSubmissionResponse response = userCredSubController.credentialSubmission(badCredentialSet);
+		assertFalse(response.isSuccess());
 	}
 }

@@ -1,11 +1,4 @@
 package model;
 
-import lombok.Data;
-
-@Data
-public class LoginResponse {
-	
-	private String response;
-	
-	public LoginResponse(){}
+public class LoginResponse extends Response {
 }
