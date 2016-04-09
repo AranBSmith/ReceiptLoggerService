@@ -5,15 +5,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.Data;
 import model.Expense;
 import model.ExpenseSubmissionResponse;
 import services.ExpenseSubmissionService;
 
 @RestController
+@Data
 public class SubmitExpenseController {
 	
 	ExpenseSubmissionService expenseSubmissionService;
 	Expense expense;
+	
+	public void ExpenseController(){
+		expenseSubmissionService = new ExpenseSubmissionService();
+	}
 	
 	@RequestMapping(value = "/submitExpense", method=RequestMethod.POST)
 	public ExpenseSubmissionResponse expenseSubmission(
@@ -27,14 +33,7 @@ public class SubmitExpenseController {
 			@RequestParam(value="approved") boolean approved){
 		
 		expense = new Expense(email, price, currency, category, date, description, expenseImageData, approved);
-		
-		ExpenseSubmissionResponse expenseSubmissionResponse = new ExpenseSubmissionResponse();
-		
-		if(expenseSubmissionService.submitExpense(expense)) {
-			expenseSubmissionResponse.setResponse("valid");
-		} else {
-			expenseSubmissionResponse.setResponse("invalid");
-		}
-		return expenseSubmissionResponse;
+				
+		return expenseSubmissionService.submitExpense(expense);
 	}
 }

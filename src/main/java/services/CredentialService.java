@@ -25,7 +25,7 @@ public class CredentialService {
 		try {
 			for(String email : userCredentials.keySet()){
 				if(!emailService.isValidEmailAddress(email)){
-					userCredResponse.appendMessage(" This is an invalid email: " + 
+					userCredResponse.appendMessage("This is an invalid email: " + 
 							email + 
 							" your user credentials submission will terminate and none of the "
 							+ "credentials submitted will be found in the Database.");

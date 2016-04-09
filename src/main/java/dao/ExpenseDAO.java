@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import model.Expense;
+import model.ExpenseSubmissionResponse;
 
 public class ExpenseDAO extends DAO {
 
@@ -16,7 +17,9 @@ public class ExpenseDAO extends DAO {
 		this.dataSource = super.getMySQLDataSource();
 	}
 	
-	public boolean insertExpense(Expense expense) {
+	public ExpenseSubmissionResponse insertExpense(Expense expense) {
+		ExpenseSubmissionResponse expenseSubResponse = new ExpenseSubmissionResponse();
+		
 		String sql = "INSERT INTO Expenses " +
 				"(email, price, expenseDate, currency, category_fk, "
 				+ "imageDirectory, descriptionDirectory, approval) "
@@ -49,10 +52,13 @@ public class ExpenseDAO extends DAO {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-				if(count > 0)
-					return true;
+				if(count > 0){
+					expenseSubResponse.setSuccess();
+					return expenseSubResponse;
+				}
 			} 
 		}
-		return false;
+		
+		return expenseSubResponse;
 	}
 }

@@ -2,13 +2,6 @@ package dao;
 
 import static org.junit.Assert.assertTrue;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import javax.sql.DataSource;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,34 +33,6 @@ public class ExpenseDAOTest {
 	
 	@Test
 	public void testInsertion(){
-		assertTrue(expenseDAO.insertExpense(expense));
+		assertTrue(expenseDAO.insertExpense(expense).isSuccess());
 	}
-	
-	@Test
-	public void testSelection(){
-        
-		DataSource ds = new ExpenseDAO().getMySQLDataSource();
-		
-        Connection con = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            con = ds.getConnection();
-            stmt = con.createStatement();
-            rs = stmt.executeQuery("select * from Users");
-            while(rs.next()){
-                System.out.println(rs.getString(1)+ " " + rs.getString(2));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally{
-                try {
-                    if(rs != null) rs.close();
-                    if(stmt != null) stmt.close();
-                    if(con != null) con.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-        }
-    }
 }
