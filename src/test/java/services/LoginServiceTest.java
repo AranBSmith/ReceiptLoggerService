@@ -9,10 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import dao.UserDAO;
+import dao.UserDAO2;
 import model.LoginResponse;
 
 public class LoginServiceTest {
-	UserDAO userDAO;
+	UserDAO2 userDAO;
 	String validEmail, validPassword, invalidEmail, invalidPassword;
 	LoginService loginService;
 	EmailService emailService;
@@ -31,7 +32,7 @@ public class LoginServiceTest {
 		invalidPassword = "";
 		
 		
-		userDAO = mock(UserDAO.class);
+		userDAO = mock(UserDAO2.class);
 		when(userDAO.login(validEmail, validPassword)).thenReturn(validLoginResponse);
 		when(userDAO.login(invalidEmail, validPassword)).thenReturn(invalidLoginResponse);
 		when(userDAO.login(validEmail, invalidPassword)).thenReturn(invalidLoginResponse);

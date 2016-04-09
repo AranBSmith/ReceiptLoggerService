@@ -1,18 +1,18 @@
 package services;
 
-import dao.UserDAO;
+import dao.UserDAO2;
 import lombok.Data;
 import model.LoginResponse;
 
 @Data
 public class LoginService {
 	
-	private UserDAO userLogin;
+	private UserDAO2 userLogin;
     private EmailService emailService;
     private LoginResponse loginResponse;
     
 	public LoginService(){
-		 userLogin = new UserDAO();
+		 userLogin = new UserDAO2();
 	     emailService = new EmailService();
 	     loginResponse = new LoginResponse();
 	}
