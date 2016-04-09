@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
@@ -16,6 +17,10 @@ import model.LoginResponse;
 
 public class UserDAO2{
 
+	
+	@Resource(name="jdbc/ReceiptLoggerService")
+	private MysqlDataSource ds;
+	
 	private DataSource dataSource;
 	private LoginResponse loginResponse;
 
@@ -39,6 +44,13 @@ public class UserDAO2{
             e.printStackTrace();
             loginResponse.setResponse(loginResponse.getResponse() + " " + e.getMessage());
         }
+        
+        if(mysqlDS == null){
+        	//this is running on the server so we must get our configuration this way instead, as db.properties
+        	// wont exist on the server
+        	mysqlDS = ds;
+        }
+        
         return mysqlDS;
     }
 	
