@@ -20,17 +20,23 @@ public class CredentialService {
 	}
 	
 	public CredentialSubmissionResponse submitCredentials(HashMap<String, String> userCredentials) {
-		// first check that every user email is valid.
 		
-		for(String email : userCredentials.keySet()){
-			if(!emailService.isValidEmailAddress(email)){
-				userCredResponse.setResponse(userCredResponse.getResponse() + 
-						" This is an invalid email: " + 
-						email + 
-						" your user credentials submission will terminate and none of the "
-						+ "credentials submitted will be found in the Database.");
-				return userCredResponse;
+		// first check that every user email is valid.
+		try {
+			for(String email : userCredentials.keySet()){
+				if(!emailService.isValidEmailAddress(email)){
+					userCredResponse.appendMessage(" This is an invalid email: " + 
+							email + 
+							" your user credentials submission will terminate and none of the "
+							+ "credentials submitted will be found in the Database.");
+					
+					return userCredResponse;
+				}
 			}
+		} catch (NullPointerException e){
+			userCredResponse.appendMessage("null values were submitted to this service, this set of "
+					+ "credentials has been refused by the web service");
+			return userCredResponse;
 		}
 		
 		return userDAO.insertUserCredentials(userCredentials);
