@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 import javax.sql.DataSource;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import model.CredentialSubmissionResponse;
 import model.LoginResponse;
 
@@ -15,10 +17,13 @@ public class UserDAO extends DAO {
 
 	private DataSource dataSource;
 	private LoginResponse loginResponse;
+	private CredentialSubmissionResponse credSubResponse;
 
 	public UserDAO(){
 		this.dataSource = super.getMySQLDataSource();
 		loginResponse = new LoginResponse();
+		credSubResponse = new CredentialSubmissionResponse();
+
 	}
 	
 	public LoginResponse login(String email, String password) {
@@ -47,7 +52,7 @@ public class UserDAO extends DAO {
 			loginResponse.setResponse("There was a null pointer exception when trying to interact with the DB"
 					+ "" + e.getMessage() + " " + e.toString());
 			return loginResponse;
-		}
+		} 
 		finally{
 			if (conn != null) {
 				try {
@@ -60,26 +65,31 @@ public class UserDAO extends DAO {
 	}
 	
 	public CredentialSubmissionResponse insertUserCredentials(HashMap<String,String> userCredentials) {
-
-		String sql = "INSERT INTO Users "
-				+ "(email, password) VALUES "
-				+ "(?,?)";
+		String sql = "INSERT INTO Users (email, password) VALUES (?, ?)";
+		
 		Connection conn = null;
 		int count = 0;
-		CredentialSubmissionResponse credSubResponse = new CredentialSubmissionResponse();
+		String exceptions = "";
 		
 		try {
 			conn = dataSource.getConnection();
-		
+			
 			for(String email : userCredentials.keySet()){
 				String password = userCredentials.get(email);
 				
 				// insert this credential pair into the database
-				PreparedStatement ps = conn.prepareStatement(sql);
+				PreparedStatement ps = null;
+				ps = conn.prepareStatement(sql);
 				ps.setString(1, email);
 				ps.setString(2, password);
 				
-				count = ps.executeUpdate(sql);
+				System.out.println(ps);
+				
+				try{
+					count = ps.executeUpdate();
+				} catch (MySQLIntegrityConstraintViolationException e){
+					exceptions += e.getMessage();
+				}
 				ps.close();
 			}
 		} catch (SQLException e) {
@@ -92,7 +102,8 @@ public class UserDAO extends DAO {
 					e.printStackTrace();
 				}
 				if(count > 0){
-					credSubResponse.setSuccess();;
+					credSubResponse.setSuccess();
+					credSubResponse.appendMessage(exceptions);
 					return credSubResponse;
 				}
 			} 

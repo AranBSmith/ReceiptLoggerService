@@ -16,6 +16,10 @@ public class UserCredentialSubmissionController {
 
 	CredentialService credService;
 	
+	public UserCredentialSubmissionController(){
+		credService = new CredentialService();
+	}
+	
 	@RequestMapping(value="credentialSubmission", method=RequestMethod.POST)
 	public CredentialSubmissionResponse credentialSubmission(HashMap<String, String> userCredentials) {
 		return credService.submitCredentials(userCredentials);

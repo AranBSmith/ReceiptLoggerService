@@ -11,5 +11,4 @@ public class ExpenseSubmissionService {
 	public ExpenseSubmissionResponse submitExpense(Expense expense) {
 		return expenseDAO.insertExpense(expense);
 	}
-	
 }
