@@ -19,19 +19,15 @@ public class LoginService {
 
 	public LoginResponse checkCredentials(String email, String password) {
 		// verify if email is of a valid format.
-        boolean validEmail = false;
-        validEmail = emailService.isValidEmailAddress(email);
-        if(
-        		email == null 
-        		|| password == null
-        		|| email.equals("") 
-        		|| password.equals("") 
-        		|| !validEmail ){
-        	
+        if(    email == null 
+    		|| password == null
+    		|| email.equals("") 
+    		|| password.equals("") ){
             return loginResponse;
-            
-        } else {
-            return userLogin.login(email, password);
         }
+        else if(!emailService.isValidEmailAddress(email))
+        	return loginResponse;
+        else
+        	return userLogin.login(email, password);
 	}
 }

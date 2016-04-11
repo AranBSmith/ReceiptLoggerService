@@ -16,17 +16,16 @@ import model.LoginResponse;
 public class UserDAO extends DAO {
 
 	private DataSource dataSource;
-	private LoginResponse loginResponse;
 	private CredentialSubmissionResponse credSubResponse;
 
 	public UserDAO(){
 		this.dataSource = super.getMySQLDataSource();
-		loginResponse = new LoginResponse();
 		credSubResponse = new CredentialSubmissionResponse();
-
 	}
 	
 	public LoginResponse login(String email, String password) {
+		
+		LoginResponse loginResponse = new LoginResponse();
 		String sql = "select password from Users where email = ?";
 		
 		Connection conn = null;		
