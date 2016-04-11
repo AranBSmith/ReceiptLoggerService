@@ -5,13 +5,13 @@ import lombok.Data;
 @Data
 public class Expense {
 	private String email;
-	private double price;
+	private Double price;
 	private String currency;
 	private String category;
 	private String date;
 	private String description;
 	private byte[] expenseImageData;
-	private boolean approved;
+	private Boolean approved;
 	
 	public Expense(
 			String email, double price, String currency, String category, 
@@ -27,5 +27,29 @@ public class Expense {
 		this.description = description;
 		this.expenseImageData = expenseImageData;
 		this.approved = approved;
+	}
+	
+	public boolean isApproved(){
+		return approved.booleanValue();
+	}
+	
+	// checks if any of the fields within Expense is null
+	public boolean containsNullField(){
+		if((	email == null 
+				|| price == null 
+				|| currency == null
+				|| category == null
+				|| date == null
+				|| description == null
+				|| expenseImageData == null
+				|| approved == null )) return true;
+		
+		else return false;
+	}
+	
+	// checks if any of the fields within Expense are invalid
+	public boolean containsInvalidValue(){
+		//TODO 
+		return false;
 	}
 }
