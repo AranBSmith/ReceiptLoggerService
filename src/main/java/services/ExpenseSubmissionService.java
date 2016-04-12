@@ -10,15 +10,17 @@ import lombok.Data;
 public class ExpenseSubmissionService {
 
 	private ExpenseDAO expenseDAO;
+	private ExpenseSubmissionResponse expenseSubmissionResponse;
 	
 	public ExpenseSubmissionService(){
 		expenseDAO = new ExpenseDAO();
+		expenseSubmissionResponse = new ExpenseSubmissionResponse();
 	}
 	
 	public ExpenseSubmissionResponse submitExpense(Expense expense) {
 		if(isValid(expense))
 			return expenseDAO.insertExpense(expense);
-		else return new ExpenseSubmissionResponse();
+		else return expenseSubmissionResponse;
 	}
 	
 	private boolean isValid(Expense expense){
@@ -28,7 +30,6 @@ public class ExpenseSubmissionService {
 				){
 			return false;
 		}
-		
 		else return true;
 	}
 }

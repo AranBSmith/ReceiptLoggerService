@@ -13,18 +13,17 @@ import services.ExpenseSubmissionService;
 @RestController
 @Data
 public class SubmitExpenseController {
+	private ExpenseSubmissionService expenseSubmissionService;
+	private Expense expense;
 	
-	ExpenseSubmissionService expenseSubmissionService;
-	Expense expense;
-	
-	public void ExpenseController(){
+	public SubmitExpenseController(){
 		expenseSubmissionService = new ExpenseSubmissionService();
 	}
 	
 	@RequestMapping(value = "/submitExpense", method=RequestMethod.POST)
 	public ExpenseSubmissionResponse expenseSubmission(
 			@RequestParam(value="email") String email,
-			@RequestParam(value="price") int price,
+			@RequestParam(value="price") double price,
 			@RequestParam(value="currency") String currency,
 			@RequestParam(value="category") String category,
 			@RequestParam(value="date") String date,
