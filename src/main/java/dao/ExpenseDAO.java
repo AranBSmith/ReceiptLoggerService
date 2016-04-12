@@ -10,7 +10,6 @@ import model.Expense;
 import model.ExpenseSubmissionResponse;
 
 public class ExpenseDAO extends DAO {
-
 	private DataSource dataSource;
 	
 	public ExpenseDAO(){
@@ -43,18 +42,17 @@ public class ExpenseDAO extends DAO {
 			ps.close();
 			
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			expenseSubResponse.appendMessage(e.getMessage());
 			
 		} finally {
 			if (conn != null) {
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					expenseSubResponse.appendMessage(e.getMessage());
 				}
 				if(count > 0){
 					expenseSubResponse.setSuccess();
-					return expenseSubResponse;
 				}
 			} 
 		}

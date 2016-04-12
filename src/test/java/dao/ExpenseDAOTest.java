@@ -25,7 +25,7 @@ public class ExpenseDAOTest {
 		currency = "usd";
 		category = "Dinner";
 		description = "A description of this expense";
-		expenseImageData = null;
+		expenseImageData = "Random".getBytes();
 		approved = false;
 		expense = 
 				new Expense(email, price, currency, category, date, description, expenseImageData, approved);

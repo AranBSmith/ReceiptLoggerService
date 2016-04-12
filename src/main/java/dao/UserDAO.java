@@ -16,11 +16,9 @@ import model.LoginResponse;
 public class UserDAO extends DAO {
 
 	private DataSource dataSource;
-	private CredentialSubmissionResponse credSubResponse;
 
 	public UserDAO(){
 		this.dataSource = super.getMySQLDataSource();
-		credSubResponse = new CredentialSubmissionResponse();
 	}
 	
 	public LoginResponse login(String email, String password) {
@@ -64,12 +62,13 @@ public class UserDAO extends DAO {
 	}
 	
 	public CredentialSubmissionResponse insertUserCredentials(HashMap<String,String> userCredentials) {
+		CredentialSubmissionResponse credSubResponse = new CredentialSubmissionResponse();
+		
 		String sql = "INSERT INTO Users (email, password) VALUES (?, ?)";
 		
 		Connection conn = null;
 		int count = 0;
-		String exceptions = "";
-		
+	
 		try {
 			conn = dataSource.getConnection();
 			
@@ -81,33 +80,28 @@ public class UserDAO extends DAO {
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, email);
 				ps.setString(2, password);
-				
-				System.out.println(ps);
-				
+								
 				try{
 					count = ps.executeUpdate();
 				} catch (MySQLIntegrityConstraintViolationException e){
-					exceptions += e.getMessage();
+					credSubResponse.appendMessage(e.getMessage());
 				}
 				ps.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally{
+			credSubResponse.appendMessage(e.getMessage());
+		} finally {
 			if (conn != null) {
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					credSubResponse.appendMessage(e.getMessage());
 				}
 				if(count > 0){
 					credSubResponse.setSuccess();
-					credSubResponse.appendMessage(exceptions);
-					return credSubResponse;
 				}
 			} 
 		}
-		credSubResponse.setFail();
 		return credSubResponse;
 	}
 }
