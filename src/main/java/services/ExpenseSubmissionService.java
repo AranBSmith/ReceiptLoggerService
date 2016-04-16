@@ -28,19 +28,15 @@ public class ExpenseSubmissionService {
 			// write the expense image data to images/
 			byte[] imageData = expense.getExpenseImageData();
 			try {
-				/*String name = "test";
 				File filePath = new File("/usr/share/tomcat7/webapps/images/test.png");
-				
 				BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
 				ImageIO.write(writeImage, "png", filePath);
 				
-				
+				return expenseDAO.insertExpense(expense);
 			
 			} catch(IOException e){
 				return returnErrorMessage(e);
 
-			}*/ 
-				return expenseDAO.insertExpense(expense);
 			} catch(Exception e){
 				return returnErrorMessage(e);
 			}
