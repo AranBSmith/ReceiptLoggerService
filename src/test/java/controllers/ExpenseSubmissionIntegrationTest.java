@@ -39,7 +39,6 @@ public class ExpenseSubmissionIntegrationTest {
 	public void setup(){
 		
 		file = new File("/usr/share/tomcat7/webapps/images/Lenna.png");
-		
 		try {
 		    image = ImageIO.read(file);
 		    bImage = toBufferedImage(image);
@@ -64,7 +63,7 @@ public class ExpenseSubmissionIntegrationTest {
 	
 	@Test
 	public void testIntegratedValidExpenseSubmission(){
-		expenseSubmissionResponse = controller.expenseSubmission(email, price, currency, category, date, description, expenseImageData, approved);
+		expenseSubmissionResponse = controller.expenseSubmission(email, price, currency, category, date, description, bytes, approved);
 		assertTrue(expenseSubmissionResponse.isSuccess());
 	}
 	
