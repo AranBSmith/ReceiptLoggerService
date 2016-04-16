@@ -32,11 +32,27 @@ public class ExpenseSubmissionServiceTest {
 	Boolean approved;
 	Double price;
 	byte[] expenseImageData;
+	Image image;
 	
 	File file;
+	BufferedImage bImage;
+	ByteArrayOutputStream baos;
+	byte[] bytes;
 	
 	@Before
 	public void setup(){
+		
+		file = new File("/usr/share/tomcat7/webapps/images/Lenna.png");
+		
+		try {
+		    image = ImageIO.read(file);
+		    bImage = toBufferedImage(image);
+			baos = new ByteArrayOutputStream();
+			ImageIO.write(bImage, "png", baos);
+			bytes = baos.toByteArray();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 		
 		email = "aran.smith47@mail.dcu.ie";
 		category = "taxi";
@@ -47,7 +63,7 @@ public class ExpenseSubmissionServiceTest {
 		approved = false;
 		price = 23.00;
 		
-		expense = new Expense(email, price, currency, category, date, description, expenseImageData, approved);
+		expense = new Expense(email, price, currency, category, date, description, bytes, approved);
 		invalidExpense = new Expense(email, price, currency, category, date, description, expenseImageData, approved);
 		
 		invalidExpense.setEmail(null);
@@ -89,14 +105,6 @@ public class ExpenseSubmissionServiceTest {
 	@Test
 	public void testConversion(){
 		try {
-			// turn file to bytes 
-			File file = new File("/usr/share/tomcat7/webapps/images/Lenna.png");
-		    Image image = ImageIO.read(file);
-		    BufferedImage bImage = toBufferedImage(image);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(bImage, "png", baos);
-			byte[] bytes = baos.toByteArray();
-			
 			// convert bytes to bufferedImage
 			BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
 		    File outputfile = new File("/usr/share/tomcat7/webapps/images/Test.png");
