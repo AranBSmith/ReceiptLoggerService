@@ -3,12 +3,23 @@ package controllers;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import model.ExpenseSubmissionResponse;
 
 public class ExpenseSubmissionIntegrationTest {
+	
+	
+	
 	
 	SubmitExpenseController controller;
 	ExpenseSubmissionResponse expenseSubmissionResponse;
@@ -18,8 +29,27 @@ public class ExpenseSubmissionIntegrationTest {
 	boolean approved;
 	double price;
 	
+	Image image;
+	File file;
+	BufferedImage bImage;
+	ByteArrayOutputStream baos;
+	byte[] bytes;
+	
 	@Before
 	public void setup(){
+		
+		file = new File("/usr/share/tomcat7/webapps/images/Lenna.png");
+		
+		try {
+		    image = ImageIO.read(file);
+		    bImage = toBufferedImage(image);
+			baos = new ByteArrayOutputStream();
+			ImageIO.write(bImage, "png", baos);
+			bytes = baos.toByteArray();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		
 		controller = new SubmitExpenseController();
 		
 		email = "aran.smith47@mail.dcu.ie";
@@ -42,6 +72,23 @@ public class ExpenseSubmissionIntegrationTest {
 	public void testIntegratedInvalidSubmission(){
 		expenseSubmissionResponse = controller.expenseSubmission(null, price, currency, category, date, description, null, approved);
 		assertFalse(expenseSubmissionResponse.isSuccess());
+	}
+	
+	private BufferedImage toBufferedImage(Image img) {
+	    if (img instanceof BufferedImage) {
+	        return (BufferedImage) img;
+	    }
+
+	    // Create a buffered image with transparency
+	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+	    // Draw the image on to the buffered image
+	    Graphics2D bGr = bimage.createGraphics();
+	    bGr.drawImage(img, 0, 0, null);
+	    bGr.dispose();
+
+	    // Return the buffered image
+	    return bimage;
 	}
 	
 	/*@Test
