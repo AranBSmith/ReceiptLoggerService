@@ -1,10 +1,16 @@
 package services;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import dao.ExpenseDAO;
+import lombok.Data;
 import model.Expense;
 import model.ExpenseSubmissionResponse;
-
-import lombok.Data;
 
 @Data
 public class ExpenseSubmissionService {
@@ -18,9 +24,33 @@ public class ExpenseSubmissionService {
 	}
 	
 	public ExpenseSubmissionResponse submitExpense(Expense expense) {
-		if(isValid(expense))
-			return expenseDAO.insertExpense(expense);
+		if(isValid(expense)){
+			// write the expense image data to images/
+			byte[] imageData = expense.getExpenseImageData();
+			try {
+				String name = "test";
+				File filePath = new File("/usr/share/tomcat7/webapps/images/test.png");
+				
+				BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
+				ImageIO.write(writeImage, "png", filePath);
+				
+				return expenseDAO.insertExpense(expense);
+			
+			} catch(IOException e){
+				return returnErrorMessage(e);
+
+			} catch(Exception e){
+				return returnErrorMessage(e);
+			}
+		}
+		
 		else return expenseSubmissionResponse;
+	}
+	
+	private ExpenseSubmissionResponse returnErrorMessage(Exception e){
+		ExpenseSubmissionResponse expenseSubResponse = new ExpenseSubmissionResponse();
+		expenseSubResponse.appendMessage(e.getMessage());
+		return expenseSubResponse;
 	}
 	
 	private boolean isValid(Expense expense){
