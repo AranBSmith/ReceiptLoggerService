@@ -35,9 +35,11 @@ public class ExpenseSubmissionService {
 				return expenseDAO.insertExpense(expense);
 			
 			} catch(IOException e){
+				e.printStackTrace();
 				return returnErrorMessage(e);
 
 			} catch(Exception e){
+				e.printStackTrace();
 				return returnErrorMessage(e);
 			}
 		}
