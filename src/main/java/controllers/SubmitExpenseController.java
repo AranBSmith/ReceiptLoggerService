@@ -1,7 +1,9 @@
 package controllers;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.zip.DataFormatException;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.Data;
 import model.Expense;
 import model.ExpenseSubmissionResponse;
+import services.CompressionUtils;
 import services.ExpenseSubmissionService;
 
 @RestController
@@ -18,7 +21,7 @@ import services.ExpenseSubmissionService;
 public class SubmitExpenseController {
 	private ExpenseSubmissionService expenseSubmissionService;
 	private Expense expense;
-	byte[] b;
+	byte[] b, decompressedImage;
 	
 	public SubmitExpenseController(){
 		expenseSubmissionService = new ExpenseSubmissionService();
@@ -36,13 +39,20 @@ public class SubmitExpenseController {
 			@RequestParam(value="approved") boolean approved){
 		try{
 			b = expenseImageData.getBytes("ISO-8859-1");
+			decompressedImage = CompressionUtils.decompress(b);
 		} catch(NullPointerException e){
 			return new ExpenseSubmissionResponse();
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-			expense = new Expense(email, price, currency, category, date, description, b, approved);
+			expense = new Expense(email, price, currency, category, date, description, decompressedImage, approved);
 				
 		return expenseSubmissionService.submitExpense(expense);
 	}

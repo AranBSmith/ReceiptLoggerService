@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.ExpenseSubmissionResponse;
+import services.CompressionUtils;
 
 public class ExpenseSubmissionIntegrationTest {
 	
@@ -46,6 +47,7 @@ public class ExpenseSubmissionIntegrationTest {
 			baos = new ByteArrayOutputStream();
 			ImageIO.write(bImage, "png", baos);
 			bytes = baos.toByteArray();
+			bytes = CompressionUtils.compress(bytes);
 			byteAsString = new String(bytes, "ISO-8859-1");
 		} catch (Exception e){
 			e.printStackTrace();
