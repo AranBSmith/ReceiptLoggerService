@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 import javax.imageio.ImageIO;
 
@@ -45,7 +46,7 @@ public class ExpenseSubmissionIntegrationTest {
 			baos = new ByteArrayOutputStream();
 			ImageIO.write(bImage, "png", baos);
 			bytes = baos.toByteArray();
-			byteAsString = new String(bytes, "UTF-8");
+			byteAsString = new String(bytes, "ISO-8859-1");
 		} catch (Exception e){
 			e.printStackTrace();
 		}

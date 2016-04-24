@@ -35,7 +35,7 @@ public class SubmitExpenseController {
 			@RequestParam(value="expenseimage") String expenseImageData,
 			@RequestParam(value="approved") boolean approved){
 		try{
-			b = expenseImageData.getBytes("UTF-8");
+			b = expenseImageData.getBytes("ISO-8859-1");
 		} catch(NullPointerException e){
 			return new ExpenseSubmissionResponse();
 		} catch (UnsupportedEncodingException e) {
