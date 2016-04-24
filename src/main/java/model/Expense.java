@@ -42,7 +42,10 @@ public class Expense {
 				|| date == null
 				|| description == null
 				|| expenseImageData == null
-				|| approved == null )) return true;
+				|| approved == null )){
+			
+			return true;
+		}
 		
 		else return false;
 	}

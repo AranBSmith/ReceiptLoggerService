@@ -42,15 +42,15 @@ public class ExpenseSubmissionService {
 				e.printStackTrace();
 				return returnErrorMessage(e);
 			}
+		} else{
+			expenseSubmissionResponse.appendMessage("There was an invalid field: Null or Invalid");
+			return expenseSubmissionResponse;
 		}
-		
-		else return expenseSubmissionResponse;
 	}
 	
 	private ExpenseSubmissionResponse returnErrorMessage(Exception e){
-		ExpenseSubmissionResponse expenseSubResponse = new ExpenseSubmissionResponse();
-		expenseSubResponse.appendMessage(e.getMessage());
-		return expenseSubResponse;
+		expenseSubmissionResponse.appendMessage(e.getMessage());
+		return expenseSubmissionResponse;
 	}
 	
 	private boolean isValid(Expense expense){
