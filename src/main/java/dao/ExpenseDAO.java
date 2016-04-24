@@ -57,6 +57,8 @@ public class ExpenseDAO extends DAO {
 			} 
 		}
 		
+		expenseSubResponse.appendMessage("Made it past the dao.");
 		return expenseSubResponse;
+
 	}
 }

@@ -32,7 +32,9 @@ public class ExpenseSubmissionService {
 				BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
 				ImageIO.write(writeImage, "png", filePath);
 				
-				return expenseDAO.insertExpense(expense);
+				expenseSubmissionResponse = expenseDAO.insertExpense(expense);
+				expenseSubmissionResponse.appendMessage("Made it past the service.");
+				return expenseSubmissionResponse;
 			
 			} catch(IOException e){
 				e.printStackTrace();
@@ -42,7 +44,7 @@ public class ExpenseSubmissionService {
 				e.printStackTrace();
 				return returnErrorMessage(e);
 			}
-		} else{
+		} else {
 			expenseSubmissionResponse.appendMessage("There was an invalid field: Null or Invalid");
 			return expenseSubmissionResponse;
 		}
