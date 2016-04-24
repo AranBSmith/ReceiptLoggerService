@@ -20,11 +20,13 @@ import services.ExpenseSubmissionService;
 @Data
 public class SubmitExpenseController {
 	private ExpenseSubmissionService expenseSubmissionService;
+	private ExpenseSubmissionResponse expenseSubmissionResponse;
 	private Expense expense;
 	byte[] b, decompressedImage;
 	
 	public SubmitExpenseController(){
 		expenseSubmissionService = new ExpenseSubmissionService();
+		expenseSubmissionResponse = new ExpenseSubmissionResponse();
 	}
 	
 	@RequestMapping(value = "/submitExpense", method=RequestMethod.POST)
@@ -41,16 +43,23 @@ public class SubmitExpenseController {
 			b = expenseImageData.getBytes("ISO-8859-1");
 			decompressedImage = CompressionUtils.decompress(b);
 		} catch(NullPointerException e){
-			return new ExpenseSubmissionResponse();
+			expenseSubmissionResponse.appendMessage(e.getMessage());
+			return expenseSubmissionResponse;
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			expenseSubmissionResponse.appendMessage(e.getMessage());
+			return expenseSubmissionResponse;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			expenseSubmissionResponse.appendMessage(e.getMessage());
+			return expenseSubmissionResponse;
 		} catch (DataFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			expenseSubmissionResponse.appendMessage(e.getMessage());
+			return expenseSubmissionResponse;
 		}
 			expense = new Expense(email, price, currency, category, date, description, decompressedImage, approved);
 				
