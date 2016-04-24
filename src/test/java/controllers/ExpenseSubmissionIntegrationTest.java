@@ -24,7 +24,7 @@ public class ExpenseSubmissionIntegrationTest {
 	SubmitExpenseController controller;
 	ExpenseSubmissionResponse expenseSubmissionResponse;
 	
-	String email, date, currency, category, description;
+	String email, date, currency, category, description, byteAsString;
 	byte[] expenseImageData;
 	boolean approved;
 	double price;
@@ -45,6 +45,7 @@ public class ExpenseSubmissionIntegrationTest {
 			baos = new ByteArrayOutputStream();
 			ImageIO.write(bImage, "png", baos);
 			bytes = baos.toByteArray();
+			byteAsString = new String(bytes, "UTF-8");
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -63,7 +64,7 @@ public class ExpenseSubmissionIntegrationTest {
 	
 	@Test
 	public void testIntegratedValidExpenseSubmission(){
-		expenseSubmissionResponse = controller.expenseSubmission(email, price, currency, category, date, description, bytes, approved);
+		expenseSubmissionResponse = controller.expenseSubmission(email, price, currency, category, date, description, byteAsString, approved);
 		assertTrue(expenseSubmissionResponse.isSuccess());
 	}
 	

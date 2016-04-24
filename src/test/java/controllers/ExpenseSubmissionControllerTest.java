@@ -19,7 +19,7 @@ public class ExpenseSubmissionControllerTest {
 	ExpenseSubmissionService expenseSubmissionService;
 	Expense validExpense, invalidExpense, nullExpense;
 	
-	String email, date, currency, category, description;
+	String email, date, currency, category, description, dataAsString;
 	byte[] expenseImageData;
 	boolean approved;
 	double price;
@@ -34,6 +34,7 @@ public class ExpenseSubmissionControllerTest {
 		currency = "usd";
 		category = "Dinner";
 		description = "A description of this expense";
+		dataAsString = "Random";
 		expenseImageData = "Random".getBytes();
 		approved = false;
 		
@@ -57,7 +58,7 @@ public class ExpenseSubmissionControllerTest {
 	
 	@Test
 	public void testValidExpenseSubmission(){
-		expenseSubmissionResponse = controller.expenseSubmission(email, price, currency, category, date, description, expenseImageData, approved);
+		expenseSubmissionResponse = controller.expenseSubmission(email, price, currency, category, date, description, dataAsString, approved);
 		assertTrue(validExpenseSubmissionResponse.isSuccess());
 	}
 	

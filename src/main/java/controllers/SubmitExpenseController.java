@@ -1,5 +1,7 @@
 package controllers;
 
+import java.nio.charset.Charset;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +17,7 @@ import services.ExpenseSubmissionService;
 public class SubmitExpenseController {
 	private ExpenseSubmissionService expenseSubmissionService;
 	private Expense expense;
+	byte[] b;
 	
 	public SubmitExpenseController(){
 		expenseSubmissionService = new ExpenseSubmissionService();
@@ -28,10 +31,14 @@ public class SubmitExpenseController {
 			@RequestParam(value="category") String category,
 			@RequestParam(value="date") String date,
 			@RequestParam(value="description") String description,
-			@RequestParam(value="expenseimage") byte[] expenseImageData,
+			@RequestParam(value="expenseimage") String expenseImageData,
 			@RequestParam(value="approved") boolean approved){
-		
-		expense = new Expense(email, price, currency, category, date, description, expenseImageData, approved);
+		try{
+			b = expenseImageData.getBytes(Charset.forName("UTF-8"));
+		} catch(NullPointerException e){
+			return new ExpenseSubmissionResponse();
+		}
+			expense = new Expense(email, price, currency, category, date, description, b, approved);
 				
 		return expenseSubmissionService.submitExpense(expense);
 	}
