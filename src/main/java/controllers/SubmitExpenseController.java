@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,9 +35,12 @@ public class SubmitExpenseController {
 			@RequestParam(value="expenseimage") String expenseImageData,
 			@RequestParam(value="approved") boolean approved){
 		try{
-			b = expenseImageData.getBytes(Charset.forName("UTF-8"));
+			b = expenseImageData.getBytes("UTF-8");
 		} catch(NullPointerException e){
 			return new ExpenseSubmissionResponse();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 			expense = new Expense(email, price, currency, category, date, description, b, approved);
 				
