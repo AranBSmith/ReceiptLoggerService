@@ -1,10 +1,9 @@
 package controllers;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.zip.DataFormatException;
 
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,17 +38,35 @@ public class SubmitExpenseController {
 			@RequestParam(value="description") String description,
 			@RequestParam(value="expenseimage") String expenseImageData,
 			@RequestParam(value="approved") boolean approved){
-		try{
-			b = expenseImageData.getBytes("ISO-8859-1");
+				
+				/*try{
+					b = expenseImageData.getBytes("ISO-8859-1");
+					decompressedImage = CompressionUtils.decompress(b);
+				} catch(NullPointerException e){
+					expenseSubmissionResponse.appendMessage(e.getMessage());
+					return expenseSubmissionResponse;
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					expenseSubmissionResponse.appendMessage(e.getMessage());
+					return expenseSubmissionResponse;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					expenseSubmissionResponse.appendMessage(e.getMessage());
+					return expenseSubmissionResponse;
+				} catch (DataFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					expenseSubmissionResponse.appendMessage(e.getMessage());
+					return expenseSubmissionResponse;
+				}*/
+				
+				// obtain byte array from base64 encoded string, then decompress
+				
+		b = Base64Utils.decodeFromString(expenseImageData);
+		try {
 			decompressedImage = CompressionUtils.decompress(b);
-		} catch(NullPointerException e){
-			expenseSubmissionResponse.appendMessage(e.getMessage());
-			return expenseSubmissionResponse;
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			expenseSubmissionResponse.appendMessage(e.getMessage());
-			return expenseSubmissionResponse;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,9 +77,14 @@ public class SubmitExpenseController {
 			e.printStackTrace();
 			expenseSubmissionResponse.appendMessage(e.getMessage());
 			return expenseSubmissionResponse;
+		} catch(NullPointerException e){
+			e.printStackTrace();
+			expenseSubmissionResponse.appendMessage(e.getMessage());
+			return expenseSubmissionResponse;
 		}
-			expense = new Expense(email, price, currency, category, date, description, decompressedImage, approved);
-				
+		
+		expense = new Expense(email, price, currency, category, date, description, decompressedImage, approved);
+			
 		return expenseSubmissionService.submitExpense(expense);
-	}
+		}
 }

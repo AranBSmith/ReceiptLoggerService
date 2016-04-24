@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.util.Base64Utils;
 
 import model.ExpenseSubmissionResponse;
 import services.CompressionUtils;
@@ -48,7 +49,7 @@ public class ExpenseSubmissionIntegrationTest {
 			ImageIO.write(bImage, "png", baos);
 			bytes = baos.toByteArray();
 			bytes = CompressionUtils.compress(bytes);
-			byteAsString = new String(bytes, "ISO-8859-1");
+			byteAsString = Base64Utils.encodeToString(bytes);
 		} catch (Exception e){
 			e.printStackTrace();
 		}
