@@ -31,19 +31,32 @@ public class ExpenseSubmissionService {
 				// write the expense image data to images/
 				byte[] imageData = expense.getExpenseImageData();
 				expenseSubmissionResponse.appendMessage("writing to test.png");
-				File filePath = new File("/usr/share/tomcat7/webapps/images/test.png");
-				expenseSubmissionResponse.appendMessage("opened directory with file.");
-				BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
-				expenseSubmissionResponse.appendMessage("managed to open test.png");
-
-				ImageIO.write(writeImage, "png", filePath);
-				expenseSubmissionResponse.appendMessage("managed to write to filepath");
 				
-				expenseSubmissionResponse = expenseDAO.insertExpense(expense);
-				expenseSubmissionResponse.appendMessage("Made it past the service.");
-				expense = null;
-				return expenseSubmissionResponse;
+				File filePath = new File("/usr/share/tomcat7/webapps/images/test.png");
+				// expenseSubmissionResponse.appendMessage("opened directory with file.");
+				
+				if(filePath.exists()){
+					expenseSubmissionResponse.appendMessage("file does exist");
+					if(filePath.canRead()){
+						expenseSubmissionResponse.appendMessage("Can read file");
+						if(filePath.canWrite()){
+							expenseSubmissionResponse.appendMessage("Can write to directory.");
+							BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
+							expenseSubmissionResponse.appendMessage("managed to open test.png");
 			
+							ImageIO.write(writeImage, "png", filePath);
+							expenseSubmissionResponse.appendMessage("managed to write to filepath");
+							
+							expenseSubmissionResponse = expenseDAO.insertExpense(expense);
+							expenseSubmissionResponse.appendMessage("Made it past the service.");
+							expense = null;
+							return expenseSubmissionResponse;
+						}
+					}
+				}
+				
+				return expenseSubmissionResponse;
+				
 			} catch(IOException e){
 				expense = null;
 				expenseSubmissionResponse.appendMessage("There was an ioexception");
