@@ -84,7 +84,7 @@ public class SubmitExpenseController {
 		}
 		
 		expense = new Expense(email, price, currency, category, date, description, decompressedImage, approved);
-			
+		
 		expenseSubmissionResponse = expenseSubmissionService.submitExpense(expense);
 		expenseSubmissionResponse.appendMessage("Made it past the controller.");
 		return expenseSubmissionResponse;

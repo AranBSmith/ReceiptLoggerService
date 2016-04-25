@@ -25,9 +25,11 @@ public class ExpenseSubmissionService {
 	
 	public ExpenseSubmissionResponse submitExpense(Expense expense) {
 		if(isValid(expense)){
+			expenseSubmissionResponse.appendMessage("details are valid");
 			// write the expense image data to images/
 			byte[] imageData = expense.getExpenseImageData();
 			try {
+				expenseSubmissionResponse.appendMessage("writing to test.png");
 				File filePath = new File("/usr/share/tomcat7/webapps/images/test.png");
 				BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
 				ImageIO.write(writeImage, "png", filePath);
@@ -37,12 +39,14 @@ public class ExpenseSubmissionService {
 				return expenseSubmissionResponse;
 			
 			} catch(IOException e){
-				e.printStackTrace();
-				return returnErrorMessage(e);
-
+				expenseSubmissionResponse.appendMessage("There was an ioexception");
+				expenseSubmissionResponse.appendMessage(e.getMessage());
+				return expenseSubmissionResponse;
 			} catch(Exception e){
 				e.printStackTrace();
-				return returnErrorMessage(e);
+				expenseSubmissionResponse.appendMessage("There was someother exception");
+				expenseSubmissionResponse.appendMessage(e.getMessage());
+				return expenseSubmissionResponse;
 			}
 		} else {
 			expenseSubmissionResponse.appendMessage("There was an invalid field: Null or Invalid");
