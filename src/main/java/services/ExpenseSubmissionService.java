@@ -31,8 +31,13 @@ public class ExpenseSubmissionService {
 			try {
 				expenseSubmissionResponse.appendMessage("writing to test.png");
 				File filePath = new File("/usr/share/tomcat7/webapps/images/test.png");
+				expenseSubmissionResponse.appendMessage("opened directory with file.");
 				BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
+				expenseSubmissionResponse.appendMessage("managed to open test.png");
+
 				ImageIO.write(writeImage, "png", filePath);
+				expenseSubmissionResponse.appendMessage("managed to write to filepath");
+
 				
 				expenseSubmissionResponse = expenseDAO.insertExpense(expense);
 				expenseSubmissionResponse.appendMessage("Made it past the service.");
