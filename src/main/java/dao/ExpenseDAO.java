@@ -45,6 +45,7 @@ public class ExpenseDAO extends DAO {
 			expenseSubResponse.appendMessage(e.getMessage());
 			
 		} finally {
+			expense = null;
 			if (conn != null) {
 				try {
 					conn.close();

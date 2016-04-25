@@ -67,6 +67,9 @@ public class SubmitExpenseController {
 		b = Base64Utils.decodeFromString(expenseImageData);
 		try {
 			decompressedImage = CompressionUtils.decompress(b);
+			b = null;
+			expense = new Expense(email, price, currency, category, date, description, decompressedImage, approved);
+			decompressedImage = null;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,9 +86,8 @@ public class SubmitExpenseController {
 			return expenseSubmissionResponse;
 		}
 		
-		expense = new Expense(email, price, currency, category, date, description, decompressedImage, approved);
-		
 		expenseSubmissionResponse = expenseSubmissionService.submitExpense(expense);
+		expense = null;
 		expenseSubmissionResponse.appendMessage("Made it past the controller.");
 		return expenseSubmissionResponse;
 		}

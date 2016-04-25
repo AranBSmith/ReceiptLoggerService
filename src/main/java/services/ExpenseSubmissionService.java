@@ -26,9 +26,10 @@ public class ExpenseSubmissionService {
 	public ExpenseSubmissionResponse submitExpense(Expense expense) {
 		if(isValid(expense)){
 			expenseSubmissionResponse.appendMessage("details are valid");
-			// write the expense image data to images/
-			byte[] imageData = expense.getExpenseImageData();
+			
 			try {
+				// write the expense image data to images/
+				byte[] imageData = expense.getExpenseImageData();
 				expenseSubmissionResponse.appendMessage("writing to test.png");
 				File filePath = new File("/usr/share/tomcat7/webapps/images/test.png");
 				expenseSubmissionResponse.appendMessage("opened directory with file.");
@@ -37,21 +38,23 @@ public class ExpenseSubmissionService {
 
 				ImageIO.write(writeImage, "png", filePath);
 				expenseSubmissionResponse.appendMessage("managed to write to filepath");
-
 				
 				expenseSubmissionResponse = expenseDAO.insertExpense(expense);
 				expenseSubmissionResponse.appendMessage("Made it past the service.");
 				return expenseSubmissionResponse;
 			
 			} catch(IOException e){
+				expense = null;
 				expenseSubmissionResponse.appendMessage("There was an ioexception");
 				expenseSubmissionResponse.appendMessage(e.getMessage());
 				return expenseSubmissionResponse;
 			} catch(IllegalArgumentException e){
+				expense = null;
 				expenseSubmissionResponse.appendMessage("There was an illegalArgumentException");
 				expenseSubmissionResponse.appendMessage(e.getMessage());
 				return expenseSubmissionResponse;
 			} catch(Exception e){
+				expense = null;
 				e.printStackTrace();
 				expenseSubmissionResponse.appendMessage("There was someother exception");
 				expenseSubmissionResponse.appendMessage(e.getMessage());
@@ -60,6 +63,7 @@ public class ExpenseSubmissionService {
 			}
 		} else {
 			expenseSubmissionResponse.appendMessage("There was an invalid field: Null or Invalid");
+			expense = null;
 			return expenseSubmissionResponse;
 		}
 	}
