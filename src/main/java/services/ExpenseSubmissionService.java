@@ -41,6 +41,7 @@ public class ExpenseSubmissionService {
 				
 				expenseSubmissionResponse = expenseDAO.insertExpense(expense);
 				expenseSubmissionResponse.appendMessage("Made it past the service.");
+				expense = null;
 				return expenseSubmissionResponse;
 			
 			} catch(IOException e){

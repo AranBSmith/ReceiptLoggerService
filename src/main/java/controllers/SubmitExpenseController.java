@@ -64,8 +64,8 @@ public class SubmitExpenseController {
 				
 				// obtain byte array from base64 encoded string, then decompress
 				
-		b = Base64Utils.decodeFromString(expenseImageData);
 		try {
+			b = Base64Utils.decodeFromString(expenseImageData);
 			decompressedImage = CompressionUtils.decompress(b);
 			b = null;
 			expense = new Expense(email, price, currency, category, date, description, decompressedImage, approved);
@@ -87,8 +87,9 @@ public class SubmitExpenseController {
 		}
 		
 		expenseSubmissionResponse = expenseSubmissionService.submitExpense(expense);
-		expense = null;
 		expenseSubmissionResponse.appendMessage("Made it past the controller.");
+		expenseSubmissionResponse.appendMessage("byte length after submiss, base64 decoding, and decompression: " + expense.getExpenseImageData().length);
+		expense = null;
 		return expenseSubmissionResponse;
 		}
 }
