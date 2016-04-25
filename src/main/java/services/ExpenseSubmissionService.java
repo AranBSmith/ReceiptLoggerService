@@ -46,6 +46,7 @@ public class ExpenseSubmissionService {
 				e.printStackTrace();
 				expenseSubmissionResponse.appendMessage("There was someother exception");
 				expenseSubmissionResponse.appendMessage(e.getMessage());
+				expenseSubmissionResponse.appendMessage(e.toString());
 				return expenseSubmissionResponse;
 			}
 		} else {
