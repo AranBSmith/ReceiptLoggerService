@@ -47,6 +47,10 @@ public class ExpenseSubmissionService {
 				expenseSubmissionResponse.appendMessage("There was an ioexception");
 				expenseSubmissionResponse.appendMessage(e.getMessage());
 				return expenseSubmissionResponse;
+			} catch(IllegalArgumentException e){
+				expenseSubmissionResponse.appendMessage("There was an illegalArgumentException");
+				expenseSubmissionResponse.appendMessage(e.getMessage());
+				return expenseSubmissionResponse;
 			} catch(Exception e){
 				e.printStackTrace();
 				expenseSubmissionResponse.appendMessage("There was someother exception");
