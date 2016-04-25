@@ -32,7 +32,7 @@ public class ExpenseSubmissionService {
 				byte[] imageData = expense.getExpenseImageData();
 				expenseSubmissionResponse.appendMessage("writing to test.png");
 				
-				File filePath = new File("/usr/share/tomcat7/webapps/images/test.png");
+				File filePath = new File("/var/lib/ReceiptLogger/images/test.png");
 				// expenseSubmissionResponse.appendMessage("opened directory with file.");
 				
 				if(filePath.exists()){
@@ -40,7 +40,7 @@ public class ExpenseSubmissionService {
 					if(filePath.canRead()){
 						expenseSubmissionResponse.appendMessage("Can read file");
 						if(filePath.canWrite()){
-							expenseSubmissionResponse.appendMessage("Can write to directory.");
+							expenseSubmissionResponse.appendMessage("Can write to file.");
 							BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
 							expenseSubmissionResponse.appendMessage("managed to open test.png");
 			
@@ -51,6 +51,8 @@ public class ExpenseSubmissionService {
 							expenseSubmissionResponse.appendMessage("Made it past the service.");
 							expense = null;
 							return expenseSubmissionResponse;
+						} else{
+							expenseSubmissionResponse.appendMessage("cannot write to file.");
 						}
 					}
 				}
