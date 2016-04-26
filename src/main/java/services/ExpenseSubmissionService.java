@@ -39,11 +39,9 @@ public class ExpenseSubmissionService {
 					// expenseSubmissionResponse.appendMessage("file does exist");
 					// if(filePath.canRead()){
 						// expenseSubmissionResponse.appendMessage("Can read file");
-						if(filePath.canWrite()){
-							expenseSubmissionResponse.appendMessage("Can write to file.");
+						// if(filePath.canWrite()){
+							// expenseSubmissionResponse.appendMessage("Can write to file.");
 							BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
-							expenseSubmissionResponse.appendMessage("managed to open test.png");
-			
 							ImageIO.write(writeImage, "png", filePath);
 							expenseSubmissionResponse.appendMessage("managed to write to filepath");
 							
@@ -51,13 +49,13 @@ public class ExpenseSubmissionService {
 							expenseSubmissionResponse.appendMessage("Made it past the service.");
 							expense = null;
 							return expenseSubmissionResponse;
-						} else {
+						/*} else {
 							expenseSubmissionResponse.appendMessage("cannot write to file.");
-						}
+						}*/
 					// }
 				// }
 				
-				return expenseSubmissionResponse;
+				// return expenseSubmissionResponse;
 				
 			} catch(IOException e){
 				expense = null;
