@@ -32,6 +32,8 @@ public class ExpenseDAO extends DAO {
 	}
 
 	private static void setId(int id) {
+		if(id == 0)
+			ExpenseDAO.id = 1;
 		ExpenseDAO.id = id;
 	}
 	
