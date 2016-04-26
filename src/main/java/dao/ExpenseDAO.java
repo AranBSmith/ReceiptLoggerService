@@ -88,6 +88,7 @@ public class ExpenseDAO extends DAO {
 			ps.setBoolean(8, expense.isApproved());
 			count = ps.executeUpdate();
 			ps.close();
+			id++;
 			
 		} catch (SQLException e) {
 			expenseSubResponse.appendMessage(e.getMessage());
