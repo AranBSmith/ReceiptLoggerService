@@ -10,10 +10,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.Data;
 import model.Expense;
+import model.ExpenseRetrievalResponse;
+import services.ExpenseRetrievalService;
 
 @Data
 @RestController
 public class RetrieveExpenseController {
+	
+	ExpenseRetrievalService expenseRetrievalService;
+	
+	public RetrieveExpenseController(){
+		this.expenseRetrievalService = new ExpenseRetrievalService();
+	}
+	
+	@RequestMapping(value="userExpenseRetrieval", method=RequestMethod.POST)
+	public ExpenseRetrievalResponse userExpenseRetrieval(
+			@RequestParam("email") String email,
+			@RequestParam("password") String password
+			){
+		
+		return expenseRetrievalService.getUserExpenses(email, password);
+	}
+	
 	
 	@RequestMapping(value="retrieveExpensesByEmail", method=RequestMethod.POST)
 	public LinkedList<Expense> retrieveExpenseByEmail(

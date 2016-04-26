@@ -1,6 +1,8 @@
 package dao;
 
-import lombok.Data;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +10,9 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import lombok.Data;
 import model.Expense;
+import model.ExpenseRetrievalResponse;
 import model.ExpenseSubmissionResponse;
 
 @Data
@@ -109,9 +113,71 @@ public class ExpenseDAO extends DAO {
 		
 		expenseSubResponse.appendMessage("Made it past the dao.");
 		return expenseSubResponse;
-
 	}
 
 	
+	public ExpenseRetrievalResponse getAllExpensesByEmail(String email) {
+		
+		ExpenseRetrievalResponse expenseRetrievalResponse = new ExpenseRetrievalResponse();
+		String sql = "select * from Expenses where email = ?";
+		Connection conn = null;
+		
+		try{
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			ResultSet resultSet = ps.executeQuery();
+			
+			Expense expense = null;
+			// while we there is another expense from the query, add it to the contained within the response
+			while(resultSet.next()){
+				int id = resultSet.getInt("id");
+				boolean approved = resultSet.getBoolean("approval");
+				double price = resultSet.getDouble("price");
+				String expenseDate = resultSet.getString("expenseDate");
+				String currency = resultSet.getString("currency");
+				String category = resultSet.getString("category_fk");
+				String description = "";
+				
+				// get description based off id.
+				try {
+					description = readTextFile(id);
+				} catch (IOException e) {
+					e.printStackTrace();
+					expenseRetrievalResponse.appendMessage(e.getMessage());
+				}
+				expense = new Expense(email, price, currency, category, expenseDate, description, null, approved);
+				
+				// add this expense to the response
+				expenseRetrievalResponse.addExpense(expense);
+			}
+			
+		} catch(SQLException e){
+			expenseRetrievalResponse.appendMessage(e.getMessage());
+			e.printStackTrace();
+			return expenseRetrievalResponse;
+		}
+		
+		expenseRetrievalResponse.setSuccess();
+		return expenseRetrievalResponse;
+	}
+	
+	private String readTextFile(int id) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader("/var/lib/ReceiptLogger/descriptions/" + id + ".txt"));
+		String everything = "";
+		try {
+		    StringBuilder sb = new StringBuilder();
+		    String line = br.readLine();
 
+		    while (line != null) {
+		        sb.append(line);
+		        sb.append(System.lineSeparator());
+		        line = br.readLine();
+		    }
+		    everything = sb.toString();
+		} finally {
+		    br.close();
+		}
+		return everything;
+	}
 }
