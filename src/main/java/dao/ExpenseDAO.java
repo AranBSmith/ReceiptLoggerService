@@ -1,7 +1,9 @@
 package dao;
 
+import lombok.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
@@ -9,15 +11,61 @@ import javax.sql.DataSource;
 import model.Expense;
 import model.ExpenseSubmissionResponse;
 
+@Data
 public class ExpenseDAO extends DAO {
 	private DataSource dataSource;
+	private ExpenseSubmissionResponse expenseSubResponse;
+	private static int id;
 	
 	public ExpenseDAO(){
 		this.dataSource = super.getMySQLDataSource();
+		generateExpenseID();
+	}
+	
+	public static int getId() {
+		return id;
+	}
+
+	private static void setId(int id) {
+		ExpenseDAO.id = id;
+	}
+	
+	// assigns ID a value, which is used to identify expenses on the file system
+	public void generateExpenseID(){
+		// SELECT TOP 1 column_name FROM table_name ORDER BY column_name DESC;
+		expenseSubResponse = new ExpenseSubmissionResponse();
+		
+		String sql = "SELECT TOP 1 id FROM Expenses ORDER BY id DESC";
+		Connection conn = null;
+		
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet resultSet = ps.executeQuery();
+			if(resultSet.next()){
+				setId(resultSet.getInt("id"));
+			} 
+			// there is no result, so this is an empty table
+			else {
+				setId(0);
+			}
+			ps.close();
+		} catch (SQLException e) {
+			expenseSubResponse.appendMessage(e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					expenseSubResponse.appendMessage(e.getMessage());
+				}
+			}
+		}
 	}
 	
 	public ExpenseSubmissionResponse insertExpense(Expense expense) {
-		ExpenseSubmissionResponse expenseSubResponse = new ExpenseSubmissionResponse();
+		expenseSubResponse = new ExpenseSubmissionResponse();
 		
 		String sql = "INSERT INTO Expenses " +
 				"(email, price, expenseDate, currency, category_fk, "
@@ -62,4 +110,7 @@ public class ExpenseDAO extends DAO {
 		return expenseSubResponse;
 
 	}
+
+	
+
 }

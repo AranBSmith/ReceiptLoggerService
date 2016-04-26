@@ -38,32 +38,6 @@ public class SubmitExpenseController {
 			@RequestParam(value="description") String description,
 			@RequestParam(value="expenseimage") String expenseImageData,
 			@RequestParam(value="approved") boolean approved){
-				
-				/*try{
-					b = expenseImageData.getBytes("ISO-8859-1");
-					decompressedImage = CompressionUtils.decompress(b);
-				} catch(NullPointerException e){
-					expenseSubmissionResponse.appendMessage(e.getMessage());
-					return expenseSubmissionResponse;
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					expenseSubmissionResponse.appendMessage(e.getMessage());
-					return expenseSubmissionResponse;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					expenseSubmissionResponse.appendMessage(e.getMessage());
-					return expenseSubmissionResponse;
-				} catch (DataFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					expenseSubmissionResponse.appendMessage(e.getMessage());
-					return expenseSubmissionResponse;
-				}*/
-				
-				// obtain byte array from base64 encoded string, then decompress
-				
 		try {
 			b = Base64Utils.decodeFromString(expenseImageData);
 			decompressedImage = CompressionUtils.decompress(b);

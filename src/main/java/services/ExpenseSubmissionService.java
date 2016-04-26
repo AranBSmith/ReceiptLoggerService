@@ -26,18 +26,18 @@ public class ExpenseSubmissionService {
 	public ExpenseSubmissionResponse submitExpense(Expense expense) {
 		if(isValid(expense)){
 			expenseSubmissionResponse.appendMessage("details are valid");
-			
+			int id = ExpenseDAO.getId();
 			try {
 				// write the expense image data to images/
 				byte[] imageData = expense.getExpenseImageData();
-				expenseSubmissionResponse.appendMessage("writing to test.png");
+				expenseSubmissionResponse.appendMessage("writing to new .png file");
 				
-				File filePath = new File("/var/lib/ReceiptLogger/images/test.png");
+				File filePath = new File("/var/lib/ReceiptLogger/images/" + id + ".png");
 				// expenseSubmissionResponse.appendMessage("opened directory with file.");
 				
-				if(filePath.exists()){
+				// if(filePath.exists()){
 					expenseSubmissionResponse.appendMessage("file does exist");
-					if(filePath.canRead()){
+					// if(filePath.canRead()){
 						expenseSubmissionResponse.appendMessage("Can read file");
 						if(filePath.canWrite()){
 							expenseSubmissionResponse.appendMessage("Can write to file.");
@@ -51,11 +51,11 @@ public class ExpenseSubmissionService {
 							expenseSubmissionResponse.appendMessage("Made it past the service.");
 							expense = null;
 							return expenseSubmissionResponse;
-						} else{
+						} else {
 							expenseSubmissionResponse.appendMessage("cannot write to file.");
 						}
-					}
-				}
+					// }
+				// }
 				
 				return expenseSubmissionResponse;
 				
@@ -84,10 +84,10 @@ public class ExpenseSubmissionService {
 		}
 	}
 	
-	private ExpenseSubmissionResponse returnErrorMessage(Exception e){
+/*	private ExpenseSubmissionResponse returnErrorMessage(Exception e){
 		expenseSubmissionResponse.appendMessage(e.getMessage());
 		return expenseSubmissionResponse;
-	}
+	}*/
 	
 	private boolean isValid(Expense expense){
 		if(	   expense == null
