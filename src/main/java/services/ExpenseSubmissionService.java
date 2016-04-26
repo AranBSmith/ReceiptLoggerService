@@ -26,7 +26,7 @@ public class ExpenseSubmissionService {
 	public ExpenseSubmissionResponse submitExpense(Expense expense) {
 		if(isValid(expense)){
 			expenseSubmissionResponse.appendMessage("details are valid");
-			int id = ExpenseDAO.getId();
+			int id = expenseDAO.getId();
 			try {
 				// write the expense image data to images/
 				byte[] imageData = expense.getExpenseImageData();

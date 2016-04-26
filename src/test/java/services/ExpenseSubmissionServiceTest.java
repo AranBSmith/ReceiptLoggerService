@@ -78,7 +78,7 @@ public class ExpenseSubmissionServiceTest {
 		when(expenseDAO.insertExpense(null)).thenReturn(invalidExpenseSubmissionResponse);
 		when(expenseDAO.insertExpense(expense)).thenReturn(validExpenseSubmissionResponse);
 		when(expenseDAO.insertExpense(invalidExpense)).thenReturn(invalidExpenseSubmissionResponse);
-		when(ExpenseDAO.getId()).thenReturn(0);
+		when(expenseDAO.getId()).thenReturn(0);
 		
 		expenseSubmissionService = new ExpenseSubmissionService();
 		expenseSubmissionService.setExpenseDAO(expenseDAO);

@@ -22,7 +22,7 @@ public class ExpenseDAO extends DAO {
 		generateExpenseID();
 	}
 	
-	public static int getId() {
+	public int getId() {
 		return id;
 	}
 
