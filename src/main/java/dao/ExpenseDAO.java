@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -52,7 +53,7 @@ public class ExpenseDAO extends DAO {
 			} 
 			// there is no result, so this is an empty table
 			else {
-				setId(0);
+				setId(1);
 			}
 			ps.close();
 		} catch (SQLException e) {
@@ -155,15 +156,14 @@ public class ExpenseDAO extends DAO {
 		} catch(SQLException e){
 			expenseRetrievalResponse.appendMessage(e.getMessage());
 			e.printStackTrace();
-			return expenseRetrievalResponse;
 		}
 		
-		expenseRetrievalResponse.setSuccess();
 		return expenseRetrievalResponse;
 	}
 	
 	private String readTextFile(int id) throws IOException{
-		BufferedReader br = new BufferedReader(new FileReader("/var/lib/ReceiptLogger/descriptions/" + id + ".txt"));
+		File file = new File("/var/lib/ReceiptLogger/descriptions/" + id + ".txt");
+		BufferedReader br = new BufferedReader(new FileReader(file));
 		String everything = "";
 		try {
 		    StringBuilder sb = new StringBuilder();

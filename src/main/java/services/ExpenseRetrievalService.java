@@ -24,8 +24,10 @@ public class ExpenseRetrievalService {
 			return expenseDAO.getAllExpensesByEmail(email);
 		}
 		// if not valid return null
-		else{
-			return null;
+		else {
+			ExpenseRetrievalResponse expenseRetrievalResponse = new ExpenseRetrievalResponse();
+			expenseRetrievalResponse.appendMessage("Invalid login credentials");
+			return expenseRetrievalResponse;
 		}
 	}
 

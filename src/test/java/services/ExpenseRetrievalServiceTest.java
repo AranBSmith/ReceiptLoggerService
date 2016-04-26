@@ -19,6 +19,7 @@ public class ExpenseRetrievalServiceTest {
 	public void testExpenseRetrieval(){
 		ExpenseRetrievalResponse expenseRetrievalResponse = expenseRetrievalService.getUserExpenses("aran.smith47@mail.dcu.ie", "apassword");
 		System.out.println(expenseRetrievalResponse.getResponse());
+		System.out.println(expenseRetrievalResponse.getExpenses().toString());
 		assertNotNull(expenseRetrievalResponse);
 	}
 }

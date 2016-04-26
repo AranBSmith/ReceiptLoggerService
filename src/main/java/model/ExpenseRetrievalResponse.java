@@ -1,10 +1,12 @@
 package model;
 
 import java.util.LinkedList;
+import lombok.Data;
 
+@Data
 public class ExpenseRetrievalResponse extends Response{
 	
-	LinkedList<Expense> expenses;
+	private LinkedList<Expense> expenses;
 	
 	public ExpenseRetrievalResponse(){
 		super();
