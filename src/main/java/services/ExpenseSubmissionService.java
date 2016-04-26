@@ -1,8 +1,10 @@
 package services;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -28,34 +30,29 @@ public class ExpenseSubmissionService {
 			expenseSubmissionResponse.appendMessage("details are valid");
 			int id = expenseDAO.getId();
 			try {
-				// write the expense image data to images/
+				// write the expense image data to ReceiptLogger/images/
 				byte[] imageData = expense.getExpenseImageData();
 				expenseSubmissionResponse.appendMessage("writing to new .png file");
 				
-				File filePath = new File("/var/lib/ReceiptLogger/images/" + id + ".png");
-				// expenseSubmissionResponse.appendMessage("opened directory with file.");
+				File imageFilePath = new File("/var/lib/ReceiptLogger/images/" + id + ".png");
+				BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
+				ImageIO.write(writeImage, "png", imageFilePath);
+				expenseSubmissionResponse.appendMessage("managed to write to filepath");
 				
-				// if(filePath.exists()){
-					// expenseSubmissionResponse.appendMessage("file does exist");
-					// if(filePath.canRead()){
-						// expenseSubmissionResponse.appendMessage("Can read file");
-						// if(filePath.canWrite()){
-							// expenseSubmissionResponse.appendMessage("Can write to file.");
-							BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
-							ImageIO.write(writeImage, "png", filePath);
-							expenseSubmissionResponse.appendMessage("managed to write to filepath");
-							
-							expenseSubmissionResponse = expenseDAO.insertExpense(expense);
-							expenseSubmissionResponse.appendMessage("Made it past the service.");
-							expense = null;
-							return expenseSubmissionResponse;
-						/*} else {
-							expenseSubmissionResponse.appendMessage("cannot write to file.");
-						}*/
-					// }
-				// }
+				// write the description to a text file
+				String description = expense.getDescription();
+				File descriptionFilePath = new File("/var/lib/ReceiptLogger/descriptions/" + id + ".txt");
 				
-				// return expenseSubmissionResponse;
+				BufferedWriter writer = new BufferedWriter(new FileWriter(descriptionFilePath));
+				writer.write(description);
+				
+				writer.close();
+				
+				expenseSubmissionResponse = expenseDAO.insertExpense(expense);
+				expenseSubmissionResponse.appendMessage("Made it past the service.");
+				expense = null;
+				
+				return expenseSubmissionResponse;
 				
 			} catch(IOException e){
 				expense = null;
