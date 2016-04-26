@@ -36,9 +36,9 @@ public class ExpenseSubmissionService {
 				// expenseSubmissionResponse.appendMessage("opened directory with file.");
 				
 				// if(filePath.exists()){
-					expenseSubmissionResponse.appendMessage("file does exist");
+					// expenseSubmissionResponse.appendMessage("file does exist");
 					// if(filePath.canRead()){
-						expenseSubmissionResponse.appendMessage("Can read file");
+						// expenseSubmissionResponse.appendMessage("Can read file");
 						if(filePath.canWrite()){
 							expenseSubmissionResponse.appendMessage("Can write to file.");
 							BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
