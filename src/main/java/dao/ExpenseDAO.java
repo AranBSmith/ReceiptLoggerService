@@ -31,10 +31,10 @@ public class ExpenseDAO extends DAO {
 		return id;
 	}
 
-	private static void setId(int id) {
+	private void setId(int id) {
 		if(id == 0)
-			ExpenseDAO.id = 1;
-		ExpenseDAO.id = id;
+			this.id = 1;
+		this.id = id;
 	}
 	
 	// assigns ID a value, which is used to identify expenses on the file system
