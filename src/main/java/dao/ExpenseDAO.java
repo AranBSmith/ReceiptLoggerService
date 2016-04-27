@@ -156,8 +156,10 @@ public class ExpenseDAO extends DAO {
 		} catch(SQLException e){
 			expenseRetrievalResponse.appendMessage(e.getMessage());
 			e.printStackTrace();
+			return expenseRetrievalResponse;
 		}
 		
+		expenseRetrievalResponse.setSuccess();
 		return expenseRetrievalResponse;
 	}
 	
