@@ -33,7 +33,6 @@ public class ExpenseDAO extends DAO {
 
 	private void setId(int tid) {
 		id = tid;
-		if(id == 0) id = 1;
 	}
 	
 	// assigns ID a value, which is used to identify expenses on the file system
@@ -54,7 +53,7 @@ public class ExpenseDAO extends DAO {
 			} 
 			// there is no result, so this is an empty table
 			else {
-				setId(1);
+				setId(0);
 			}
 			ps.close();
 		} catch (SQLException e) {
@@ -133,7 +132,7 @@ public class ExpenseDAO extends DAO {
 			Expense expense = null;
 			// while we there is another expense from the query, add it to the contained within the response
 			while(resultSet.next()){
-				int id = resultSet.getInt("id");
+				int id = resultSet.getInt("id")-1;
 				boolean approved = resultSet.getBoolean("approval");
 				double price = resultSet.getDouble("price");
 				String expenseDate = resultSet.getString("expenseDate");
