@@ -31,10 +31,9 @@ public class ExpenseDAO extends DAO {
 		return id;
 	}
 
-	private void setId(int id) {
-		if(id == 0)
-			this.id = 1;
-		this.id = id;
+	private void setId(int tid) {
+		id = tid;
+		if(id == 0) id = 1;
 	}
 	
 	// assigns ID a value, which is used to identify expenses on the file system
@@ -163,7 +162,7 @@ public class ExpenseDAO extends DAO {
 		return expenseRetrievalResponse;
 	}
 	
-	private String readTextFile(int id) throws IOException{
+	private String readTextFile(int id) throws IOException {
 		File file = new File("/var/lib/ReceiptLogger/descriptions/" + id + ".txt");
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String everything = "";
