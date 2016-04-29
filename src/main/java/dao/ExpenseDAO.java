@@ -88,6 +88,7 @@ public class ExpenseDAO extends DAO {
 			ps.setString(3, expense.getDate());
 			ps.setString(4, expense.getCurrency());
 			ps.setString(5, expense.getCard());
+			expenseSubResponse.appendMessage("Card no. is: " + expense.getCard());
 			ps.setString(6, expense.getCategory());
 			ps.setString(7, "somedirectoryforimages");
 			ps.setString(8, "somedirectoryfortextfiles");
