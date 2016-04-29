@@ -73,9 +73,9 @@ public class ExpenseDAO extends DAO {
 		expenseSubResponse = new ExpenseSubmissionResponse();
 		
 		String sql = "INSERT INTO Expenses " +
-				"(email, price, expenseDate, currency, category_fk, "
+				"(email, price, expenseDate, currency, card, category_fk, "
 				+ "imageDirectory, descriptionDirectory, approval) "
-				+ "VALUES (?, ?, STR_TO_DATE(?, '%m/%d/%Y'), ?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, STR_TO_DATE(?, '%m/%d/%Y'), ?, ?, ?, ?, ?, ?)";
 		
 		Connection conn = null;
 		int count = 0;
@@ -87,10 +87,11 @@ public class ExpenseDAO extends DAO {
 			ps.setDouble(2, expense.getPrice());
 			ps.setString(3, expense.getDate());
 			ps.setString(4, expense.getCurrency());
-			ps.setString(5, expense.getCategory());
-			ps.setString(6, "somedirectoryforimages");
-			ps.setString(7, "somedirectoryfortextfiles");
-			ps.setBoolean(8, expense.isApproved());
+			ps.setString(5, expense.getCard());
+			ps.setString(6, expense.getCategory());
+			ps.setString(7, "somedirectoryforimages");
+			ps.setString(8, "somedirectoryfortextfiles");
+			ps.setBoolean(9, expense.isApproved());
 			count = ps.executeUpdate();
 			ps.close();
 			id++;
@@ -139,6 +140,7 @@ public class ExpenseDAO extends DAO {
 				String currency = resultSet.getString("currency");
 				String category = resultSet.getString("category_fk");
 				String description = "";
+				String card = resultSet.getString("card");
 				
 				// get description based off id.
 				try {
@@ -147,7 +149,7 @@ public class ExpenseDAO extends DAO {
 					e.printStackTrace();
 					expenseRetrievalResponse.appendMessage(e.getMessage());
 				}
-				expense = new Expense(email, price, currency, category, expenseDate, description, null, approved);
+				expense = new Expense(email, price, currency, card, category, expenseDate, description, null, approved);
 				
 				// add this expense to the response
 				expenseRetrievalResponse.addExpense(expense);

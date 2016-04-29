@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class ExpenseTest {
 
-	String email, category, currency, date, description;
+	String email, category, currency, date, description, card;
 	Boolean approved;
 	Double price;
 	byte[] expenseImageData;
@@ -22,13 +22,14 @@ public class ExpenseTest {
 		email = "aran.smith47@mail.dcu.ie";
 		category = "taxi";
 		currency = "eur";
+		card = "1234";
 		date = "01/10/2016";
 		description = "Travel fare when I hailed a taxi.";
 		expenseImageData = "Random".getBytes();
 		approved = false;
 		price = 23.00;
 		
-		expense = new Expense(email, price, currency, category, date, description, expenseImageData, approved);
+		expense = new Expense(email, price, currency, card, category, date, description, expenseImageData, approved);
 	}
 	
 	@Test

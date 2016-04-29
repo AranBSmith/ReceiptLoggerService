@@ -10,7 +10,7 @@ import model.Expense;
 public class ExpenseDAOTest {
 	ExpenseDAO expenseDAO;
 	Expense expense;
-	String email, date, currency, category, description;
+	String email, date, currency, category, description, card;
 	byte[] expenseImageData;
 	boolean approved;
 	double price;
@@ -24,11 +24,12 @@ public class ExpenseDAOTest {
 		date = "01/01/2016";
 		currency = "usd";
 		category = "Dinner";
+		card = "1234";
 		description = "A description of this expense";
 		expenseImageData = "Random".getBytes();
 		approved = false;
 		expense = 
-				new Expense(email, price, currency, category, date, description, expenseImageData, approved);
+				new Expense(email, price, currency, card, category, date, description, expenseImageData, approved);
 	}
 	
 	@Test

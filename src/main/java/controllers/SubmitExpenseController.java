@@ -33,6 +33,7 @@ public class SubmitExpenseController {
 			@RequestParam(value="email") String email,
 			@RequestParam(value="price") double price,
 			@RequestParam(value="currency") String currency,
+			@RequestParam(value="card") String card,
 			@RequestParam(value="category") String category,
 			@RequestParam(value="date") String date,
 			@RequestParam(value="description") String description,
@@ -42,7 +43,7 @@ public class SubmitExpenseController {
 			b = Base64Utils.decodeFromString(expenseImageData);
 			decompressedImage = CompressionUtils.decompress(b);
 			b = null;
-			expense = new Expense(email, price, currency, category, date, description, decompressedImage, approved);
+			expense = new Expense(email, price, currency, card, category, date, description, decompressedImage, approved);
 			decompressedImage = null;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -4,9 +4,11 @@ import lombok.Data;
 
 @Data
 public class Expense {
+	private int id;
 	private String email;
 	private Double price;
 	private String currency;
+	private String card;
 	private String category;
 	private String date;
 	private String description;
@@ -14,14 +16,34 @@ public class Expense {
 	private Boolean approved;
 	
 	public Expense(
-			String email, double price, String currency, String category, 
+			String email, double price, String currency, String card, String category, 
 			String date, String description, byte[] expenseImageData,
 			boolean approved
 			){
 		
+		this.id = -1;
 		this.email = email;
 		this.price = price;
 		this.currency = currency;
+		this.card = card;
+		this.category = category;
+		this.date = date;
+		this.description = description;
+		this.expenseImageData = expenseImageData;
+		this.approved = approved;
+	}
+	
+	public Expense(
+			int id, String email, double price, String currency, String card, String category, 
+			String date, String description, byte[] expenseImageData,
+			boolean approved
+			){
+		
+		this.id = id;
+		this.email = email;
+		this.price = price;
+		this.currency = currency;
+		this.card = card;
 		this.category = category;
 		this.date = date;
 		this.description = description;
