@@ -23,6 +23,7 @@ public class ExpenseRetrievalService {
 		if(loginResponse.isSuccess()){
 			return expenseDAO.getAllExpensesByEmail(email);
 		}
+		
 		// if not valid return null
 		else {
 			ExpenseRetrievalResponse expenseRetrievalResponse = new ExpenseRetrievalResponse();

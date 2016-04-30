@@ -1,8 +1,5 @@
 package dao;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +8,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import lombok.Data;
+import model.CancelExpenseResponse;
 import model.Expense;
 import model.ExpenseRetrievalResponse;
 import model.ExpenseSubmissionResponse;
@@ -19,6 +16,8 @@ import model.ExpenseSubmissionResponse;
 public class ExpenseDAO extends DAO {
 	private DataSource dataSource;
 	private ExpenseSubmissionResponse expenseSubResponse;
+	private CancelExpenseResponse cancelExpenseResponse;
+	private FileSystemDAO fileSystemDAO;
 	private static int id;
 	
 	public ExpenseDAO(){
@@ -144,7 +143,9 @@ public class ExpenseDAO extends DAO {
 				
 				// get description based off id.
 				try {
-					description = readTextFile(id);
+					fileSystemDAO = new FileSystemDAO();
+					description = fileSystemDAO.readExpenseDescription(id);
+					fileSystemDAO = null;
 				} catch (IOException e) {
 					e.printStackTrace();
 					expenseRetrievalResponse.appendMessage(e.getMessage());
@@ -165,23 +166,25 @@ public class ExpenseDAO extends DAO {
 		return expenseRetrievalResponse;
 	}
 	
-	private String readTextFile(int id) throws IOException {
-		File file = new File("/var/lib/ReceiptLogger/descriptions/" + id + ".txt");
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		String everything = "";
-		try {
-		    StringBuilder sb = new StringBuilder();
-		    String line = br.readLine();
-
-		    while (line != null) {
-		        sb.append(line);
-		        sb.append(System.lineSeparator());
-		        line = br.readLine();
-		    }
-		    everything = sb.toString();
-		} finally {
-		    br.close();
+	public CancelExpenseResponse removeExpense(int expenseID) {
+		String sql = "DELETE * FROM Expenses WHERE id = ?";
+		Connection conn = null;
+		
+		try{
+			if(fileSystemDAO.delete(expenseID)){
+				conn = dataSource.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setInt(1, id);
+				ps.executeUpdate();
+				cancelExpenseResponse.setSuccess();
+			} else {
+				cancelExpenseResponse.appendMessage("there was an issue with deleting files from the filesystem");
+			}
+		} catch(SQLException e){
+			 e.printStackTrace();
+			 cancelExpenseResponse.appendMessage(e.getMessage());
 		}
-		return everything;
+		
+		return cancelExpenseResponse;
 	}
 }

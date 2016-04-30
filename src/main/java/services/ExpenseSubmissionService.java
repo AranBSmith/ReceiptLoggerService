@@ -1,15 +1,7 @@
 package services;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import dao.ExpenseDAO;
+import dao.FileSystemDAO;
 import lombok.Data;
 import model.Expense;
 import model.ExpenseSubmissionResponse;
@@ -18,10 +10,12 @@ import model.ExpenseSubmissionResponse;
 public class ExpenseSubmissionService {
 
 	private ExpenseDAO expenseDAO;
+	private FileSystemDAO fileSystemDAO;
 	private ExpenseSubmissionResponse expenseSubmissionResponse;
 	
 	public ExpenseSubmissionService(){
 		expenseDAO = new ExpenseDAO();
+		fileSystemDAO = new FileSystemDAO();
 		expenseSubmissionResponse = new ExpenseSubmissionResponse();
 	}
 	
@@ -30,23 +24,23 @@ public class ExpenseSubmissionService {
 			expenseSubmissionResponse.appendMessage("details are valid");
 			int id = expenseDAO.getId();
 			try {
+				
 				// write the expense image data to ReceiptLogger/images/
 				byte[] imageData = expense.getExpenseImageData();
 				expenseSubmissionResponse.appendMessage("writing to new .png file");
-				
-				File imageFilePath = new File("/var/lib/ReceiptLogger/images/" + id + ".png");
-				BufferedImage writeImage = ImageIO.read(new ByteArrayInputStream(imageData));
-				ImageIO.write(writeImage, "png", imageFilePath);
-				expenseSubmissionResponse.appendMessage("managed to write to filepath");
+				if(fileSystemDAO.writeExpenseImageData(imageData, id)){
+					expenseSubmissionResponse.appendMessage("managed to write image data to filepath");
+				} else {
+					expenseSubmissionResponse.appendMessage("was not able to write image data to filepath");
+				}
 				
 				// write the description to a text file
 				String description = expense.getDescription();
-				File descriptionFilePath = new File("/var/lib/ReceiptLogger/descriptions/" + id + ".txt");
-				
-				BufferedWriter writer = new BufferedWriter(new FileWriter(descriptionFilePath));
-				writer.write(description);
-				
-				writer.close();
+				if(fileSystemDAO.writeExpenseDescription(description, id)){
+					expenseSubmissionResponse.appendMessage("managed to write image description to filepath");
+				} else {
+					expenseSubmissionResponse.appendMessage("was not able to write description to filepath");
+				}
 				
 				expenseSubmissionResponse = expenseDAO.insertExpense(expense);
 				expenseSubmissionResponse.appendMessage("Made it past the service.");
@@ -54,11 +48,6 @@ public class ExpenseSubmissionService {
 				
 				return expenseSubmissionResponse;
 				
-			} catch(IOException e){
-				expense = null;
-				expenseSubmissionResponse.appendMessage("There was an ioexception");
-				expenseSubmissionResponse.appendMessage(e.getMessage());
-				return expenseSubmissionResponse;
 			} catch(IllegalArgumentException e){
 				expense = null;
 				expenseSubmissionResponse.appendMessage("There was an illegalArgumentException");
@@ -78,11 +67,6 @@ public class ExpenseSubmissionService {
 			return expenseSubmissionResponse;
 		}
 	}
-	
-/*	private ExpenseSubmissionResponse returnErrorMessage(Exception e){
-		expenseSubmissionResponse.appendMessage(e.getMessage());
-		return expenseSubmissionResponse;
-	}*/
 	
 	private boolean isValid(Expense expense){
 		if(	   expense == null
