@@ -1,5 +1,12 @@
 package model;
 
+import lombok.Data;
+
+@Data
 public class ExpenseSubmissionResponse extends Response{
-	public ExpenseSubmissionResponse(){}
+	private int id;
+	
+	public ExpenseSubmissionResponse(){
+		super();
+	}
 }

@@ -16,7 +16,6 @@ import model.Expense;
 import model.ExpenseRetrievalResponse;
 import model.ExpenseSubmissionResponse;
 
-@Data
 public class ExpenseDAO extends DAO {
 	private DataSource dataSource;
 	private ExpenseSubmissionResponse expenseSubResponse;
@@ -88,13 +87,13 @@ public class ExpenseDAO extends DAO {
 			ps.setString(3, expense.getDate());
 			ps.setString(4, expense.getCurrency());
 			ps.setString(5, expense.getCard());
-			expenseSubResponse.appendMessage("Card no. is: " + expense.getCard());
 			ps.setString(6, expense.getCategory());
 			ps.setString(7, "somedirectoryforimages");
 			ps.setString(8, "somedirectoryfortextfiles");
 			ps.setBoolean(9, expense.isApproved());
 			count = ps.executeUpdate();
 			ps.close();
+			expenseSubResponse.setId(id);
 			id++;
 			
 		} catch (SQLException e) {
