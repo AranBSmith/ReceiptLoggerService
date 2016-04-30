@@ -149,7 +149,7 @@ public class ExpenseDAO extends DAO {
 					e.printStackTrace();
 					expenseRetrievalResponse.appendMessage(e.getMessage());
 				}
-				expense = new Expense(email, price, currency, card, category, expenseDate, description, null, approved);
+				expense = new Expense(id, email, price, currency, card, category, expenseDate, description, null, approved);
 				
 				// add this expense to the response
 				expenseRetrievalResponse.addExpense(expense);
