@@ -172,7 +172,7 @@ public class ExpenseDAO extends DAO {
 		CancelExpenseResponse cancelExpenseResponse = new CancelExpenseResponse();
 		
 		try{
-			if(fileSystemDAO.delete(expenseID)){
+			// if(fileSystemDAO.delete(expenseID)){
 				cancelExpenseResponse.appendMessage("successfully deleted files from system");
 				
 				conn = dataSource.getConnection();
@@ -185,10 +185,10 @@ public class ExpenseDAO extends DAO {
 				ps.close();
 				
 				return cancelExpenseResponse;
-			} else {
+			/*} else {
 				cancelExpenseResponse.appendMessage("there was an issue with deleting files from the filesystem");
 				return cancelExpenseResponse;
-			}
+			}*/
 		} catch(SQLException e){
 			 e.printStackTrace();
 			 cancelExpenseResponse.appendMessage(e.getMessage());
