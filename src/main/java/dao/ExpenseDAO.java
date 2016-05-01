@@ -170,13 +170,11 @@ public class ExpenseDAO extends DAO {
 		String sql = "DELETE FROM Expenses WHERE id = ?";
 		Connection conn = null;
 		
-		expenseID = expenseID + 1;
-		
 		try{
 			if(fileSystemDAO.delete(expenseID)){
 				conn = dataSource.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql);
-				ps.setInt(1, expenseID);
+				ps.setInt(1, expenseID+1);
 				ps.executeUpdate();
 				cancelExpenseResponse.setSuccess();
 				return cancelExpenseResponse;
