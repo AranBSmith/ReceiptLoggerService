@@ -169,16 +169,21 @@ public class ExpenseDAO extends DAO {
 	public CancelExpenseResponse removeExpense(int expenseID) {
 		String sql = "DELETE FROM Expenses WHERE id = ?";
 		Connection conn = null;
-		cancelExpenseResponse = new CancelExpenseResponse();
+		CancelExpenseResponse cancelExpenseResponse = new CancelExpenseResponse();
 		
 		try{
 			if(fileSystemDAO.delete(expenseID)){
+				cancelExpenseResponse.appendMessage("successfully deleted files from system");
+				
 				conn = dataSource.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql);
 				ps.setInt(1, expenseID+1);
-				ps.executeUpdate();
+				int count = ps.executeUpdate();
+				if(count > 0) cancelExpenseResponse.setSuccess();
+				else cancelExpenseResponse.appendMessage("deletion failed");
+				
 				ps.close();
-				cancelExpenseResponse.setSuccess();
+				
 				return cancelExpenseResponse;
 			} else {
 				cancelExpenseResponse.appendMessage("there was an issue with deleting files from the filesystem");

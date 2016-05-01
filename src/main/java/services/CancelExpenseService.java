@@ -2,7 +2,9 @@ package services;
 
 import dao.ExpenseDAO;
 import model.CancelExpenseResponse;
+import lombok.Data;
 
+@Data
 public class CancelExpenseService {
 	private LoginService loginService;
 	private ExpenseDAO expenseDAO;
