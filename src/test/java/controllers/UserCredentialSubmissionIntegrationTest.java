@@ -13,19 +13,19 @@ import model.CredentialSubmissionResponse;
 public class UserCredentialSubmissionIntegrationTest {
 	CredentialSubmissionResponse validUserCredSubResponse, invalidUserCredSubResponse, result;
 	UserCredentialSubmissionController userCredSub;
-	HashMap<String,String> userCredentials, badCredentialSet;
+	HashMap<String,String[]> userCredentials, badCredentialSet;
 
 	
 	@Before
 	public void setup(){
 		userCredSub = new UserCredentialSubmissionController();
-		userCredentials = new HashMap<String,String>();
-		userCredentials.put("aran.smith4@mail.dcu.ie","password");
-		userCredentials.put("anemail@adomain.com","anotherpassword");
+		userCredentials = new HashMap<>();
+		userCredentials.put("aran.smith4@mail.dcu.ie", new String[]{"password", "random"});
+		userCredentials.put("anemail@adomain.com", new String[]{"anotherpassword", "random"});
 		
-		badCredentialSet = new HashMap<String,String>();
-		badCredentialSet.put("notanemail", "");
-		badCredentialSet.put("", "password213");
+		badCredentialSet = new HashMap<>();
+		badCredentialSet.put("notanemail", new String[]{"", ""});
+		badCredentialSet.put("", new String[]{"password213", ""});
 	}
 	
 	@Test

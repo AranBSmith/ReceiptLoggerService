@@ -6,6 +6,8 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
+import model.LoginResponse;
+
 public class LoginIntegrationTest {
 	LoginController loginController;
 	String password, email, nonexistentEmail;
@@ -20,7 +22,9 @@ public class LoginIntegrationTest {
 	
 	@Test
 	public void testIntegratedValidLogin(){
-		assertTrue(loginController.login(email, password).isSuccess());
+		LoginResponse loginResponse = loginController.login(email, password);
+		System.out.println(loginResponse.getResponse());
+		assertTrue(loginResponse.isSuccess());
 	}
 	
 	@Test

@@ -14,20 +14,20 @@ import services.CredentialService;
 
 public class UserCredentialSubmissionControllerTest {
 	UserCredentialSubmissionController userCredSubController;
-	HashMap<String,String> userCredentials, badCredentialSet;
+	HashMap<String,String[]> userCredentials, badCredentialSet;
 	CredentialService credService;
 	CredentialSubmissionResponse successfulCredSubResponse;
 	
 	@Before
 	public void setup(){
 			
-		userCredentials = new HashMap<String,String>();
-		userCredentials.put("aran.smith47@mail.dcu.ie","password");
-		userCredentials.put("anemail@adomain.com","anotherpassword");
+		userCredentials = new HashMap<>();
+		userCredentials.put("aran.smith47@mail.dcu.ie", new String[]{"password", "random"});
+		userCredentials.put("anemail@adomain.com", new String[]{"anotherpassword", "random"});
 		
-		badCredentialSet = new HashMap<String,String>();
-		badCredentialSet.put("notanemail", "");
-		badCredentialSet.put("", "password213");
+		badCredentialSet = new HashMap<>();
+		badCredentialSet.put("notanemail", new String[]{"",""});
+		badCredentialSet.put("", new String[]{"password213",""});
 
 		successfulCredSubResponse = new CredentialSubmissionResponse();
 		successfulCredSubResponse.setSuccess();

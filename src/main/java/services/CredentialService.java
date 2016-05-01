@@ -19,13 +19,17 @@ public class CredentialService {
 		userCredResponse = new CredentialSubmissionResponse();
 	}
 	
-	public CredentialSubmissionResponse submitCredentials(HashMap<String, String> userCredentials) {
+	public CredentialSubmissionResponse submitCredentials(HashMap<String, String[]> userCredentials) {
 		
 		// first check that every user email is valid.
 		try {
 			for(String email : userCredentials.keySet()){
-				if(!emailService.isValidEmailAddress(email)){
-					userCredResponse.appendMessage("This is an invalid email: " + 
+				if(!emailService.isValidEmailAddress(email) && 
+						userCredentials.get(email)[0] != null && 
+						userCredentials.get(email)[1] != null &&
+						userCredentials.get(email).length == 2){
+					
+					userCredResponse.appendMessage("This is an invalid credential submission: " + 
 							email + 
 							" your user credentials submission will terminate and none of the "
 							+ "credentials submitted will be found in the Database.");
