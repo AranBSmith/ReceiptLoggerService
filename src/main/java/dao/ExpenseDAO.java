@@ -169,6 +169,7 @@ public class ExpenseDAO extends DAO {
 	public CancelExpenseResponse removeExpense(int expenseID) {
 		String sql = "DELETE FROM Expenses WHERE id = ?";
 		Connection conn = null;
+		cancelExpenseResponse = new CancelExpenseResponse();
 		
 		try{
 			if(fileSystemDAO.delete(expenseID)){
