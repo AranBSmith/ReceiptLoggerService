@@ -177,6 +177,7 @@ public class ExpenseDAO extends DAO {
 				PreparedStatement ps = conn.prepareStatement(sql);
 				ps.setInt(1, expenseID+1);
 				ps.executeUpdate();
+				ps.close();
 				cancelExpenseResponse.setSuccess();
 				return cancelExpenseResponse;
 			} else {
