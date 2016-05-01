@@ -16,9 +16,7 @@ public class CancelExpenseService {
 	
 	public CancelExpenseResponse cancelExpense(String email, String password, int id){
 		if(loginService.checkCredentials(email, password).isSuccess()){
-			// remove specified expense from the filesystem
-			
-			// remove specified expense from the DB
+			// remove specified expense from the DB and file system
 			return expenseDAO.removeExpense(id);
 		} else {
 			cancelExpenseResponse.appendMessage("Credentials were invalid.");

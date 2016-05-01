@@ -174,12 +174,13 @@ public class ExpenseDAO extends DAO {
 			if(fileSystemDAO.delete(expenseID)){
 				conn = dataSource.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql);
-				ps.setInt(1, id);
+				ps.setInt(1, expenseID);
 				ps.executeUpdate();
 				cancelExpenseResponse.setSuccess();
 			} else {
 				cancelExpenseResponse.appendMessage("there was an issue with deleting files from the filesystem");
 			}
+			
 		} catch(SQLException e){
 			 e.printStackTrace();
 			 cancelExpenseResponse.appendMessage(e.getMessage());
