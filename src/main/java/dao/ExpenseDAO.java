@@ -167,8 +167,10 @@ public class ExpenseDAO extends DAO {
 	}
 	
 	public CancelExpenseResponse removeExpense(int expenseID) {
-		String sql = "DELETE * FROM Expenses WHERE id = ?";
+		String sql = "DELETE FROM Expenses WHERE id = ?";
 		Connection conn = null;
+		
+		expenseID = expenseID + 1;
 		
 		try{
 			if(fileSystemDAO.delete(expenseID)){
@@ -177,15 +179,15 @@ public class ExpenseDAO extends DAO {
 				ps.setInt(1, expenseID);
 				ps.executeUpdate();
 				cancelExpenseResponse.setSuccess();
+				return cancelExpenseResponse;
 			} else {
 				cancelExpenseResponse.appendMessage("there was an issue with deleting files from the filesystem");
+				return cancelExpenseResponse;
 			}
-			
 		} catch(SQLException e){
 			 e.printStackTrace();
 			 cancelExpenseResponse.appendMessage(e.getMessage());
+			 return cancelExpenseResponse;
 		}
-		
-		return cancelExpenseResponse;
 	}
 }
