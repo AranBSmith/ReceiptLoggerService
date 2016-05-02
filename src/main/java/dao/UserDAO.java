@@ -18,14 +18,31 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationExceptio
 import model.CredentialSubmissionResponse;
 import model.LoginResponse;
 
+/**
+ * Class for manipulating the User table contained within the system's MySQL
+ * database.
+ * 
+ * @author Aran
+ *
+ */
 public class UserDAO extends DAO {
 
 	private DataSource dataSource;
 
+	/**
+	 * Gets the web services configuration the local Mysql database.
+	 */
 	public UserDAO(){
 		this.dataSource = super.getMySQLDataSource();
 	}
 	
+	/**
+	 * gets a salt corresponding to a user email
+	 * 
+	 * @param email
+	 * @return salt
+	 * @throws SQLException
+	 */
 	private String getSalt(String email) throws SQLException {
 		String sql = "select salt from Users where email = ?";
 		Connection conn = null;		
@@ -47,6 +64,17 @@ public class UserDAO extends DAO {
 		return salt;
 	}
 	
+	/**
+	 * checks if the email exists within the User table, if it does, it then 
+	 * checks the hash of the submitted password concat with the salt. If the 
+	 * result hash matches with that found in the database a successful Login
+	 * Response is returned.
+	 * 
+	 * @param email
+	 * @param password
+	 * @return LoginResponse containing the status of the login as well as any
+	 * exceptions caught.
+	 */
 	public LoginResponse login(String email, String password) {
 		
 		LoginResponse loginResponse = new LoginResponse();
@@ -114,6 +142,16 @@ public class UserDAO extends DAO {
 		}
 	}
 	
+	/**
+	 * Inserts a batch of user credentials to the system database. 
+	 * 
+	 * @param userCredentials Hashmap of with key being the email mapped to a 
+	 * String array containing the hashed SHA-512 password in its first element
+	 * and the corresponding salt for that hashed password. 
+	 * @return CredentialSubmission Response object specifying the status of the 
+	 * submission, if it was unsuccessful the response will contain the messages
+	 * of any exceptions thrown upon trying to submit user credentials.
+	 */
 	public CredentialSubmissionResponse insertUserCredentials(HashMap<String, String[]> userCredentials) {
 		CredentialSubmissionResponse credSubResponse = new CredentialSubmissionResponse();
 		

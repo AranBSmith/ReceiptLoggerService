@@ -2,6 +2,13 @@ package model;
 
 import lombok.Data;
 
+
+/**
+ * Expense Model class containing data on a user expense.
+ * 
+ * @author Aran
+ *
+ */
 @Data
 public class Expense {
 	private int id;
@@ -51,11 +58,21 @@ public class Expense {
 		this.approved = approved;
 	}
 	
+	/**
+	 * Check if the expense is approved.
+	 * 
+	 * @return true if approved, false if not approved.
+	 */
 	public boolean isApproved(){
 		return approved.booleanValue();
 	}
 	
-	// checks if any of the fields within Expense is null
+
+	/**
+	 * checks fields in expense for any nulls.
+	 * 
+	 * @return true if contains a null field, false otherwise.
+	 */
 	public boolean containsNullField(){
 		if((	email == null 
 				|| price == null 
@@ -72,7 +89,11 @@ public class Expense {
 		else return false;
 	}
 	
-	// checks if any of the fields within Expense are invalid
+	/**
+	 * checks for invalid fields
+	 * 
+	 * @return true if contains an invalid field, false if otherwise.
+	 */
 	public boolean containsInvalidValue(){
 		//TODO 
 		return false;

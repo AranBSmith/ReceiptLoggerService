@@ -6,6 +6,13 @@ import dao.UserDAO;
 import lombok.Data;
 import model.CredentialSubmissionResponse;
 
+/**
+ * Credential Service class used to verifty user credentials before submitting
+ * them to the UserDAO class.
+ * 
+ * @author Aran
+ *
+ */
 @Data
 public class CredentialService {
 
@@ -13,12 +20,29 @@ public class CredentialService {
 	EmailService emailService;
 	CredentialSubmissionResponse userCredResponse;
 	
+	/**
+	 * Creates an instance of the UserDAO, EmailService and 
+	 * CredentialSubmissionResponse classes
+	 */
 	public CredentialService(){
 		userDAO = new UserDAO();
 		emailService = new EmailService();
 		userCredResponse = new CredentialSubmissionResponse();
 	}
 	
+	/**
+	 * Checks for nulls in the arguments passed, verifies that the String array
+	 * is of the correct length (2), and verifies if the email provided is 
+	 * authentic. If the arguments pass the check the UserDAO class is used in 
+	 * order to insert a batch set of user credentials data.
+	 * 
+	 * @param userCredentials Hashmap of with key being the email mapped to a 
+	 * String array containing the hashed SHA-512 password in its first element
+	 * and the corresponding salt for that hashed password. 
+	 * @return CredentialSubmission Response object specifying the status of the 
+	 * submission, if it was unsuccessful the response will contain the messages
+	 * of any exceptions thrown upon trying to submit user credentials.
+	 */
 	public CredentialSubmissionResponse submitCredentials(HashMap<String, String[]> userCredentials) {
 		
 		// first check that every user email is valid.

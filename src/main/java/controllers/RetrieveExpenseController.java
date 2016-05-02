@@ -13,17 +13,38 @@ import model.Expense;
 import model.ExpenseRetrievalResponse;
 import services.ExpenseRetrievalService;
 
+/**
+ * Rest Controller used to retrieve expenses by various different means.
+ * 
+ * @author Aran
+ *
+ */
 @Data
 @RestController
 public class RetrieveExpenseController {
 	
 	ExpenseRetrievalService expenseRetrievalService;
 	
+	/**
+	 * Initialises an instance of the ExpenseRetrievalService used for
+	 * retrieving expense information from the DB and the filesystem.
+	 */
 	public RetrieveExpenseController(){
 		this.expenseRetrievalService = new ExpenseRetrievalService();
 	}
 	
-	@RequestMapping(value="userExpenseRetrieval", method=RequestMethod.POST)
+	/**
+	 * Used to get expenses according to a user's email, given that the credentials
+	 * are valid.
+	 * 
+	 * @param email A valid user email.
+	 * @param password A valid user's password.
+	 * @return ExpenseRetrievalResponse containing all of the user's expenses,
+	 * if the credentials submitted were valid. Will not return the user's 
+	 * expenses if the credentials were wrong. Will return exceptions in the 
+	 * webservice if something went wrong upon trying to retrieve user expenses.
+	 */
+	@RequestMapping(value="/userExpenseRetrieval", method=RequestMethod.POST)
 	public ExpenseRetrievalResponse userExpenseRetrieval(
 			@RequestParam("email") String email,
 			@RequestParam("password") String password

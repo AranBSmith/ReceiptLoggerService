@@ -6,6 +6,11 @@ import lombok.Data;
 import model.Expense;
 import model.ExpenseSubmissionResponse;
 
+/**
+ * Service Class used for submitting expenses.
+ * 
+ * @author Aran
+ */
 @Data
 public class ExpenseSubmissionService {
 
@@ -13,12 +18,26 @@ public class ExpenseSubmissionService {
 	private FileSystemDAO fileSystemDAO;
 	private ExpenseSubmissionResponse expenseSubmissionResponse;
 	
+	/**
+	 * Creates an instance of ExpenseDAO, FileSystemDAO and 
+	 * ExpenseSubmissionResponse
+	 */
 	public ExpenseSubmissionService(){
 		expenseDAO = new ExpenseDAO();
 		fileSystemDAO = new FileSystemDAO();
 		expenseSubmissionResponse = new ExpenseSubmissionResponse();
 	}
 	
+	/**
+	 * This class verifies an expense object passed to it and writes image and 
+	 * expense description data to the file system, then it will insert the 
+	 * appropriate information to the database.
+	 * 
+	 * @param expense Expense object.
+	 * @return ExpenseSubmissionResponse object which specifying the status of the 
+	 * expense submission, and any exceptions thrown in the process of submitting 
+	 * an expense.
+	 */
 	public ExpenseSubmissionResponse submitExpense(Expense expense) {
 		if(isValid(expense)){
 			expenseSubmissionResponse.appendMessage("details are valid");

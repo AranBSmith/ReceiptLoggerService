@@ -13,6 +13,13 @@ import model.Expense;
 import model.ExpenseRetrievalResponse;
 import model.ExpenseSubmissionResponse;
 
+/**
+ * Expense Data Access Object Class. Manipulates the Expense table in the data
+ * base.
+ * 
+ * @author Aran
+ *
+ */
 public class ExpenseDAO extends DAO {
 	private DataSource dataSource;
 	private ExpenseSubmissionResponse expenseSubResponse;
@@ -20,11 +27,19 @@ public class ExpenseDAO extends DAO {
 	private FileSystemDAO fileSystemDAO;
 	private static int id;
 	
+	/**
+	 * Gets the details regarding the systems MySql database.
+	 */
 	public ExpenseDAO(){
 		this.dataSource = super.getMySQLDataSource();
 		generateExpenseID();
 	}
 	
+	/**
+	 * Gets the most recently used ID in the expense table.
+	 * 
+	 * @return the latest integer unique identifier.
+	 */
 	public int getId() {
 		return id;
 	}
@@ -33,7 +48,11 @@ public class ExpenseDAO extends DAO {
 		id = tid;
 	}
 	
-	// assigns ID a value, which is used to identify expenses on the file system
+	/**
+	 * Gets an identifier value that this class will use to label new expenses.
+	 * Required in case there are already expenses in the database, upon deployment
+	 * we don't want to over write any pre-existing Expenses.
+	 */
 	public void generateExpenseID(){
 		// SELECT TOP 1 column_name FROM table_name ORDER BY column_name DESC;
 		expenseSubResponse = new ExpenseSubmissionResponse();
@@ -67,6 +86,14 @@ public class ExpenseDAO extends DAO {
 		}
 	}
 	
+	/**
+	 * Used to write expense information into the expense table of the database.
+	 * 
+	 * @param expense
+	 * @return ExpenseSubmissionResponse object which specifying the status of the 
+	 * expense submission, and any exceptions thrown in the process of submitting 
+	 * an expense.
+	 */
 	public ExpenseSubmissionResponse insertExpense(Expense expense) {
 		expenseSubResponse = new ExpenseSubmissionResponse();
 		
@@ -117,6 +144,17 @@ public class ExpenseDAO extends DAO {
 	}
 
 	
+	/**
+	 * Retrieves expenses from the database based on the email provided, this
+	 * class also gets the expense descriptions and image data from the file
+	 * system.
+	 * 
+	 * @param email
+	 * @return ExpenseRetrievalResponse containing the status of the request, 
+	 * if successful this object will contain all the expenses corresponding 
+	 * to the email. If any exceptions were thrown during when getting the
+	 * user's expenses, they will be found the in the response.
+	 */
 	public ExpenseRetrievalResponse getAllExpensesByEmail(String email) {
 		
 		ExpenseRetrievalResponse expenseRetrievalResponse = new ExpenseRetrievalResponse();
@@ -166,6 +204,14 @@ public class ExpenseDAO extends DAO {
 		return expenseRetrievalResponse;
 	}
 	
+	/**
+	 * Remove an expense based on the ID provided from the expense table 
+	 * in the MySQL database.
+	 * 
+	 * @param expenseID
+	 * @return CancelExpenseResponse containing the status of the request,
+	 * as well as exceptions thrown during this process.
+	 */
 	public CancelExpenseResponse removeExpense(int expenseID) {
 		String sql = "DELETE FROM Expenses WHERE id = ?";
 		Connection conn = null;

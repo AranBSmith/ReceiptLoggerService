@@ -1,19 +1,27 @@
 package services;
 
-/**
- * Created by Aran on 4/24/2016.
- * source: https://dzone.com/articles/how-compress-and-uncompress
- * This class is used for the compression and decompression of data.
- */
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+/**
+ * Compression Service class dealing with any compression required in the web 
+ * service.
+ * 
+ * @author Aran
+ *
+ */
 public class CompressionUtils {
 
+    /**
+     * Compresses a byte array using the java.util.zip tools.
+     * 
+     * @param data 
+     * @return compressed byte array
+     * @throws IOException
+     */
     public static byte[] compress(byte[] data) throws IOException {
         Deflater deflater = new Deflater();
         deflater.setInput(data);
@@ -29,6 +37,15 @@ public class CompressionUtils {
 
         return output;
     }
+    
+    /**
+     * Uncompresses a byte array using the java.util.zip tools.
+     * 
+     * @param data
+     * @return decompressed byte array.
+     * @throws IOException
+     * @throws DataFormatException
+     */
     public static byte[] decompress(byte[] data) throws IOException, DataFormatException {
         Inflater inflater = new Inflater();
         inflater.setInput(data);
