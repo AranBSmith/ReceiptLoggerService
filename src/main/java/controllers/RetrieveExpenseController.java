@@ -76,7 +76,7 @@ public class RetrieveExpenseController {
 			){
 		
 		ExpenseRetrievalResponse expenseRetrievalResponse = expenseRetrievalService.getUserExpenseByID(email, password, recordID);
-		byte[] expenseImageData = expenseRetrievalResponse.getExpenses().getFirst().getExpenseImageData();
+		byte[] expenseImageData = expenseRetrievalResponse.getExpenses().element().getExpenseImageData();
 		
 		// compress and convert to base64
 		
