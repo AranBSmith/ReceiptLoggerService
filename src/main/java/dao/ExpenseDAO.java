@@ -204,6 +204,65 @@ public class ExpenseDAO extends DAO {
 		return expenseRetrievalResponse;
 	}
 	
+	public ExpenseRetrievalResponse getExpenseByID(int id){
+		
+		ExpenseRetrievalResponse expenseRetrievalResponse = new ExpenseRetrievalResponse();
+		String sql = "select * from Expenses where id = ?";
+		Connection conn = null;
+		
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet resultSet = ps.executeQuery();
+			
+			Expense expense = null;
+			
+			if(resultSet.next()){
+				boolean approved = resultSet.getBoolean("approval");
+				double price = resultSet.getDouble("price");
+				String expenseDate = resultSet.getString("expenseDate");
+				String currency = resultSet.getString("currency");
+				String category = resultSet.getString("category_fk");
+				String description = "";
+				String card = resultSet.getString("card");
+				
+				// get description based off id.
+				try {
+					fileSystemDAO = new FileSystemDAO();
+					description = fileSystemDAO.readExpenseDescription(id);
+					fileSystemDAO = null;
+				} catch (IOException e) {
+					e.printStackTrace();
+					expenseRetrievalResponse.appendMessage(e.getMessage());
+				}
+				
+				byte[] expenseImageData = null;
+				
+				try {
+					fileSystemDAO = new FileSystemDAO();
+					expenseImageData = fileSystemDAO.readExpenseImageData(id);
+					fileSystemDAO = null;
+				} catch (IOException e) {
+					e.printStackTrace();
+					expenseRetrievalResponse.appendMessage(e.getMessage());
+				}
+				
+				expense = new Expense(id, "", price, currency, card, category, expenseDate, description, expenseImageData, approved);
+				expenseRetrievalResponse.addExpense(expense);
+			}
+			
+		} catch(SQLException e){
+			expenseRetrievalResponse.appendMessage(e.getMessage());
+			e.printStackTrace();
+			return expenseRetrievalResponse;
+		}
+		
+		expenseRetrievalResponse.setSuccess();
+		return expenseRetrievalResponse;
+	
+	}
+	
 	/**
 	 * Remove an expense based on the ID provided from the expense table 
 	 * in the MySQL database.

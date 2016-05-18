@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
@@ -66,9 +69,11 @@ public class FileSystemDAO {
 		return true;
 	}
 
-	public String readExpenseImageData(int id){
+	public byte[] readExpenseImageData(int id) throws IOException{
+		Path path = Paths.get("/var/lib/ReceiptLogger/images/" + id + ".png");
+		byte[] data = Files.readAllBytes(path);
 		
-		return "";
+		return data;
 	}
 	
 	/**
