@@ -34,7 +34,7 @@ public class ExpenseDAOTest {
 		description = "A description of this expense";
 		expenseImageData = "Random".getBytes();
 		approved = false;
-		id = 2;
+		id = 1;
 		expense = 
 				new Expense(email, price, currency, card, category, date, description, expenseImageData, approved);
 
