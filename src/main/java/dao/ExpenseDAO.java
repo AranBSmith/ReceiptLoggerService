@@ -204,66 +204,69 @@ public class ExpenseDAO extends DAO {
 		return expenseRetrievalResponse;
 	}
 	
-	public ExpenseRetrievalResponse getExpenseByID(int id){
-		
-		ExpenseRetrievalResponse expenseRetrievalResponse = new ExpenseRetrievalResponse();
-		String sql = "select * from Expenses where id = ?";
-		Connection conn = null;
-		
-		try {
-			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, id);
-			ResultSet resultSet = ps.executeQuery();
+	public ExpenseRetrievalResponse getExpenseByID(int expenseID){
+		if(expenseID < id){
+			ExpenseRetrievalResponse expenseRetrievalResponse = new ExpenseRetrievalResponse();
+			String sql = "select * from Expenses where id = ?";
+			Connection conn = null;
 			
-			Expense expense = null;
-			
-			if(resultSet.next()){
-				boolean approved = resultSet.getBoolean("approval");
-				double price = resultSet.getDouble("price");
-				String expenseDate = resultSet.getString("expenseDate");
-				String currency = resultSet.getString("currency");
-				String category = resultSet.getString("category_fk");
-				String description = "";
-				String card = resultSet.getString("card");
+			try {
+				conn = dataSource.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setInt(1, expenseID);
+				ResultSet resultSet = ps.executeQuery();
 				
-				// get description based off id.
-				try {
-					fileSystemDAO = new FileSystemDAO();
-					description = fileSystemDAO.readExpenseDescription(id-1);
-					fileSystemDAO = null;
-				} catch (IOException e) {
-					e.printStackTrace();
-					expenseRetrievalResponse.appendMessage(e.getMessage());
+				Expense expense = null;
+				
+				if(resultSet.next()){
+					boolean approved = resultSet.getBoolean("approval");
+					double price = resultSet.getDouble("price");
+					String expenseDate = resultSet.getString("expenseDate");
+					String currency = resultSet.getString("currency");
+					String category = resultSet.getString("category_fk");
+					String description = "";
+					String card = resultSet.getString("card");
+					
+					// get description based off id.
+					try {
+						fileSystemDAO = new FileSystemDAO();
+						description = fileSystemDAO.readExpenseDescription(expenseID-1);
+						fileSystemDAO = null;
+					} catch (IOException e) {
+						e.printStackTrace();
+						expenseRetrievalResponse.appendMessage(e.getMessage());
+					}
+					
+					byte[] expenseImageData = null;
+					
+					try {
+						fileSystemDAO = new FileSystemDAO();
+						expenseImageData = fileSystemDAO.readExpenseImageData(expenseID-1);
+						fileSystemDAO = null;
+					} catch (IOException e) {
+						e.printStackTrace();
+						expenseRetrievalResponse.appendMessage(e.getMessage());
+					}
+					
+					expense = new Expense(expenseID, "", price, currency, card, category, expenseDate, description, expenseImageData, approved);
+					expenseRetrievalResponse.addExpense(expense);
+					
+					expense = null;
+					expenseImageData = null;
 				}
 				
-				byte[] expenseImageData = null;
-				
-				try {
-					fileSystemDAO = new FileSystemDAO();
-					expenseImageData = fileSystemDAO.readExpenseImageData(id-1);
-					fileSystemDAO = null;
-				} catch (IOException e) {
-					e.printStackTrace();
-					expenseRetrievalResponse.appendMessage(e.getMessage());
-				}
-				
-				expense = new Expense(id, "", price, currency, card, category, expenseDate, description, expenseImageData, approved);
-				expenseRetrievalResponse.addExpense(expense);
-				
-				expense = null;
-				expenseImageData = null;
+			} catch(SQLException e){
+				expenseRetrievalResponse.appendMessage(e.getMessage());
+				e.printStackTrace();
+				return expenseRetrievalResponse;
 			}
-			
-		} catch(SQLException e){
-			expenseRetrievalResponse.appendMessage(e.getMessage());
-			e.printStackTrace();
+			expenseRetrievalResponse.setSuccess();
 			return expenseRetrievalResponse;
 		}
 		
-		expenseRetrievalResponse.setSuccess();
+		ExpenseRetrievalResponse expenseRetrievalResponse = new ExpenseRetrievalResponse();
+		expenseRetrievalResponse.appendMessage("Invalid identifier");
 		return expenseRetrievalResponse;
-	
 	}
 	
 	/**
