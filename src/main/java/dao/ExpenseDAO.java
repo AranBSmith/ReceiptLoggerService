@@ -205,7 +205,7 @@ public class ExpenseDAO extends DAO {
 	}
 	
 	public ExpenseRetrievalResponse getExpenseByID(int expenseID){
-		if(expenseID < id){
+		if(expenseID <= id){
 			ExpenseRetrievalResponse expenseRetrievalResponse = new ExpenseRetrievalResponse();
 			String sql = "select * from Expenses where id = ?";
 			Connection conn = null;
