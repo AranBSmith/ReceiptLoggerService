@@ -260,6 +260,7 @@ public class ExpenseDAO extends DAO {
 				e.printStackTrace();
 				return expenseRetrievalResponse;
 			}
+			
 			expenseRetrievalResponse.setSuccess();
 			return expenseRetrievalResponse;
 		}

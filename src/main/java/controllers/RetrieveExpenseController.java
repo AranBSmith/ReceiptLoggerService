@@ -76,32 +76,34 @@ public class RetrieveExpenseController {
 			){
 		
 		ExpenseRetrievalResponse expenseRetrievalResponse = expenseRetrievalService.getUserExpenseByID(email, password, recordID);
-		byte[] expenseImageData = expenseRetrievalResponse.getExpenses().element().getExpenseImageData();
-		
-		// compress and convert to base64
-		
-		try {
-			expenseImageData = CompressionUtils.compress(expenseImageData);
-		} catch (IOException e) {
-			e.printStackTrace();
-			expenseRetrievalResponse.appendMessage(e.getMessage());
-			return expenseRetrievalResponse;
-		}
-		
-		String converted = Base64Utils.encodeToString(expenseImageData);
-		
-		expenseRetrievalResponse.addCompressedData(converted);
-		
-		Expense expense = expenseRetrievalResponse.getExpenses().getFirst();
-		expense.setExpenseImageData(null);
-		LinkedList<Expense> expenses = new LinkedList<>();
-		expenses.push(expense);
-		
-		expenseRetrievalResponse.setExpenses(expenses);
-		
-		expenseImageData = null;
-		expense = null;
-		expenses = null;
+		if(expenseRetrievalResponse.isSuccess()){
+			byte[] expenseImageData = expenseRetrievalResponse.getExpenses().getFirst().getExpenseImageData();
+			
+			// compress and convert to base64
+			
+			try {
+				expenseImageData = CompressionUtils.compress(expenseImageData);
+			} catch (IOException e) {
+				e.printStackTrace();
+				expenseRetrievalResponse.appendMessage(e.getMessage());
+				return expenseRetrievalResponse;
+			}
+			
+			String converted = Base64Utils.encodeToString(expenseImageData);
+			
+			expenseRetrievalResponse.addCompressedData(converted);
+			
+			Expense expense = expenseRetrievalResponse.getExpenses().getFirst();
+			expense.setExpenseImageData(null);
+			LinkedList<Expense> expenses = new LinkedList<>();
+			expenses.push(expense);
+			
+			expenseRetrievalResponse.setExpenses(expenses);
+			
+			expenseImageData = null;
+			expense = null;
+			expenses = null;
+		} 
 		
 		return expenseRetrievalResponse;
 	}
