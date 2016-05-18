@@ -241,7 +241,7 @@ public class ExpenseDAO extends DAO {
 					
 					try {
 						fileSystemDAO = new FileSystemDAO();
-						expenseImageData = fileSystemDAO.readExpenseImageData(expenseID-1);
+						expenseImageData = fileSystemDAO.readExpenseImageData(expenseID);
 						fileSystemDAO = null;
 					} catch (IOException e) {
 						e.printStackTrace();
