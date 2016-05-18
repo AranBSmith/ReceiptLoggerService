@@ -250,6 +250,9 @@ public class ExpenseDAO extends DAO {
 				
 				expense = new Expense(id, "", price, currency, card, category, expenseDate, description, expenseImageData, approved);
 				expenseRetrievalResponse.addExpense(expense);
+				
+				expense = null;
+				expenseImageData = null;
 			}
 			
 		} catch(SQLException e){

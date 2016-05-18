@@ -67,7 +67,7 @@ public class RetrieveExpenseController {
 		return null;
 	}
 	
-	@RequestMapping(value="retrieveExpensesByID", method=RequestMethod.POST)
+	@RequestMapping(value="/retrieveExpensesByID", method=RequestMethod.POST)
 	public ExpenseRetrievalResponse retrieveExpenseById(
 			@RequestParam("email") String email,
 			@RequestParam("password") String password,
@@ -98,6 +98,10 @@ public class RetrieveExpenseController {
 		expenses.push(expense);
 		
 		expenseRetrievalResponse.setExpenses(expenses);
+		
+		expenseImageData = null;
+		expense = null;
+		expenses = null;
 		
 		return expenseRetrievalResponse;
 	}
