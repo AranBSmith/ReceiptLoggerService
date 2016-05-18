@@ -47,11 +47,11 @@ public class ExpenseDAOTest {
 		assertTrue(expenseDAO.insertExpense(expense).isSuccess());
 	}
 	
-	@Test
+	/*@Test
 	public void testRetrievalByID(){
 		ExpenseRetrievalResponse expenseRetrievalResponse = expenseDAO.getExpenseByID(id);
 		LinkedList<Expense> expenses = expenseRetrievalResponse.getExpenses();
 		assertTrue(expenses.size() == 1);
 		assertNotNull(expenses.get(0).getExpenseImageData());
-	}
+	}*/
 }
