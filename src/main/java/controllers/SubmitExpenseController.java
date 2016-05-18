@@ -93,7 +93,7 @@ public class SubmitExpenseController {
 				e.printStackTrace();
 				expenseSubmissionResponse.appendMessage(e.getMessage());
 				return expenseSubmissionResponse;
-			} catch(NullPointerException e){
+			} catch(NullPointerException e) {
 				e.printStackTrace();
 				expenseSubmissionResponse.appendMessage(e.getMessage());
 				return expenseSubmissionResponse;
