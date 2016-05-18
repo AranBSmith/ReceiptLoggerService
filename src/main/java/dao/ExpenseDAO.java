@@ -170,7 +170,7 @@ public class ExpenseDAO extends DAO {
 			Expense expense = null;
 			// while we there is another expense from the query, add it to the contained within the response
 			while(resultSet.next()){
-				int id = resultSet.getInt("id")-1;
+				int id = resultSet.getInt("id");
 				boolean approved = resultSet.getBoolean("approval");
 				double price = resultSet.getDouble("price");
 				String expenseDate = resultSet.getString("expenseDate");
@@ -241,7 +241,7 @@ public class ExpenseDAO extends DAO {
 					
 					try {
 						fileSystemDAO = new FileSystemDAO();
-						expenseImageData = fileSystemDAO.readExpenseImageData(expenseID);
+						expenseImageData = fileSystemDAO.readExpenseImageData(expenseID-1);
 						fileSystemDAO = null;
 					} catch (IOException e) {
 						e.printStackTrace();
