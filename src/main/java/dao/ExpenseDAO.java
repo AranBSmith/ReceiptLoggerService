@@ -230,7 +230,7 @@ public class ExpenseDAO extends DAO {
 					// get description based off id.
 					try {
 						fileSystemDAO = new FileSystemDAO();
-						description = fileSystemDAO.readExpenseDescription(expenseID-1);
+						description = fileSystemDAO.readExpenseDescription(expenseID-2);
 						fileSystemDAO = null;
 					} catch (IOException e) {
 						e.printStackTrace();
