@@ -98,8 +98,7 @@ public class ExpenseDAO extends DAO {
 		expenseSubResponse = new ExpenseSubmissionResponse();
 		
 		String sql = "INSERT INTO Expenses " +
-				"(email, price, expenseDate, currency, card, category_fk, "
-				+ "imageDirectory, descriptionDirectory, approval) "
+				"(email, price, expenseDate, currency, card, category_fk, approval) "
 				+ "VALUES (?, ?, STR_TO_DATE(?, '%m/%d/%Y'), ?, ?, ?, ?)";
 		
 		Connection conn = null;

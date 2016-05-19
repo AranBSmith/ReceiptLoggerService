@@ -20,10 +20,7 @@ import model.ExpenseSubmissionResponse;
 import services.CompressionUtils;
 
 public class ExpenseSubmissionIntegrationTest {
-	
-	
-	
-	
+
 	SubmitExpenseController controller;
 	ExpenseSubmissionResponse expenseSubmissionResponse;
 	
