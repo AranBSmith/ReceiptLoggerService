@@ -100,7 +100,7 @@ public class ExpenseDAO extends DAO {
 		String sql = "INSERT INTO Expenses " +
 				"(email, price, expenseDate, currency, card, category_fk, "
 				+ "imageDirectory, descriptionDirectory, approval) "
-				+ "VALUES (?, ?, STR_TO_DATE(?, '%m/%d/%Y'), ?, ?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, STR_TO_DATE(?, '%m/%d/%Y'), ?, ?, ?, ?)";
 		
 		Connection conn = null;
 		int count = 0;
@@ -114,9 +114,7 @@ public class ExpenseDAO extends DAO {
 			ps.setString(4, expense.getCurrency());
 			ps.setString(5, expense.getCard());
 			ps.setString(6, expense.getCategory());
-			ps.setString(7, "somedirectoryforimages");
-			ps.setString(8, "somedirectoryfortextfiles");
-			ps.setBoolean(9, expense.isApproved());
+			ps.setBoolean(7, expense.isApproved());
 			count = ps.executeUpdate();
 			ps.close();
 			expenseSubResponse.setId(id);
