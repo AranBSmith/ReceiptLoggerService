@@ -289,7 +289,7 @@ public class ExpenseDAO extends DAO {
 				
 				conn = dataSource.getConnection();
 				PreparedStatement ps = conn.prepareStatement(sql);
-				ps.setInt(1, expenseID+1);
+				ps.setInt(1, expenseID);
 				int count = ps.executeUpdate();
 				if(count > 0) cancelExpenseResponse.setSuccess();
 				else cancelExpenseResponse.appendMessage("deletion failed");
