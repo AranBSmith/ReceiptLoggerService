@@ -65,6 +65,7 @@ public class SubmitExpenseController {
 	@RequestMapping(value = "/submitExpense", method=RequestMethod.POST)
 	public ExpenseSubmissionResponse expenseSubmission(
 			@RequestParam(value="email") String email,
+			@RequestParam(value="password") String password,
 			@RequestParam(value="price") double price,
 			@RequestParam(value="currency") String currency,
 			@RequestParam(value="card") String card,
@@ -99,7 +100,7 @@ public class SubmitExpenseController {
 				return expenseSubmissionResponse;
 			}
 			
-			expenseSubmissionResponse = expenseSubmissionService.submitExpense(expense);
+			expenseSubmissionResponse = expenseSubmissionService.submitExpense(expense, password);
 			expenseSubmissionResponse.appendMessage("Made it past the controller.");
 			expenseSubmissionResponse.appendMessage("byte length after submiss, base64 decoding, and decompression: " + expense.getExpenseImageData().length);
 			// dereference this

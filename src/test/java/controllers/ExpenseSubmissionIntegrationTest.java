@@ -24,7 +24,7 @@ public class ExpenseSubmissionIntegrationTest {
 	SubmitExpenseController controller;
 	ExpenseSubmissionResponse expenseSubmissionResponse;
 	
-	String email, date, currency, category, description, byteAsString, card;
+	String email, date, currency, category, description, byteAsString, card, password;
 	byte[] expenseImageData;
 	boolean approved;
 	double price;
@@ -54,6 +54,7 @@ public class ExpenseSubmissionIntegrationTest {
 		controller = new SubmitExpenseController();
 		
 		email = "aran.smith47@mail.dcu.ie";
+		password = "apassword";
 		price = 100.00;
 		date = "01/01/2016";
 		card = "1234";
@@ -66,13 +67,13 @@ public class ExpenseSubmissionIntegrationTest {
 	
 	@Test
 	public void testIntegratedValidExpenseSubmission(){
-		expenseSubmissionResponse = controller.expenseSubmission(email, price, currency, card, category, date, description, byteAsString, approved);
+		expenseSubmissionResponse = controller.expenseSubmission(email, password, price, currency, card, category, date, description, byteAsString, approved);
 		assertTrue(expenseSubmissionResponse.isSuccess());
 	}
 	
 	@Test
 	public void testIntegratedInvalidSubmission(){
-		expenseSubmissionResponse = controller.expenseSubmission(null, price, currency, card, category, date, description, null, approved);
+		expenseSubmissionResponse = controller.expenseSubmission(null, password, price, currency, card, category, date, description, null, approved);
 		assertFalse(expenseSubmissionResponse.isSuccess());
 	}
 	

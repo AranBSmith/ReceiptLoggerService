@@ -19,7 +19,7 @@ public class ExpenseSubmissionControllerTest {
 	ExpenseSubmissionService expenseSubmissionService;
 	Expense validExpense, invalidExpense, nullExpense;
 	
-	String email, date, currency, category, description, dataAsString, card;
+	String email, date, currency, category, description, dataAsString, card, password;
 	byte[] expenseImageData;
 	boolean approved;
 	double price;
@@ -29,6 +29,8 @@ public class ExpenseSubmissionControllerTest {
 		controller = new SubmitExpenseController();
 		
 		email = "aran.smith47@mail.dcu.ie";
+		password = "apassword";
+		
 		price = 100.00;
 		date = "01/01/2016";
 		currency = "usd";
@@ -49,8 +51,8 @@ public class ExpenseSubmissionControllerTest {
 		invalidExpenseSubmissionResponse = new ExpenseSubmissionResponse();
 		
 		expenseSubmissionService = mock(ExpenseSubmissionService.class);
-		when(expenseSubmissionService.submitExpense(validExpense)).thenReturn(validExpenseSubmissionResponse);
-		when(expenseSubmissionService.submitExpense(invalidExpense)).thenReturn(invalidExpenseSubmissionResponse);
+		when(expenseSubmissionService.submitExpense(validExpense, password)).thenReturn(validExpenseSubmissionResponse);
+		when(expenseSubmissionService.submitExpense(invalidExpense, password)).thenReturn(invalidExpenseSubmissionResponse);
 		// when(expenseSubmissionService.submitExpense(nullExpense)).thenReturn(invalidResponse);
 		
 		controller.setExpenseSubmissionService(expenseSubmissionService);
@@ -58,13 +60,13 @@ public class ExpenseSubmissionControllerTest {
 	
 	@Test
 	public void testValidExpenseSubmission(){
-		expenseSubmissionResponse = controller.expenseSubmission(email, price, currency, card, category, date, description, dataAsString, approved);
+		expenseSubmissionResponse = controller.expenseSubmission(email, password, price, currency, card, category, date, description, dataAsString, approved);
 		assertTrue(validExpenseSubmissionResponse.isSuccess());
 	}
 	
 	@Test
 	public void testInvalidSubmission(){
-		expenseSubmissionResponse = controller.expenseSubmission(email, price, null, card, category, date, description, null, approved);
+		expenseSubmissionResponse = controller.expenseSubmission(email, password, price, null, card, category, date, description, null, approved);
 		assertFalse(expenseSubmissionResponse.isSuccess());
 	}
 	

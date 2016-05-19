@@ -28,7 +28,7 @@ public class ExpenseSubmissionServiceTest {
 	Expense expense, invalidExpense;
 	ExpenseSubmissionResponse expenseSubResponse, validExpenseSubmissionResponse, invalidExpenseSubmissionResponse;
 	
-	String email, category, currency, date, description, card;
+	String email, category, currency, date, description, card, password;
 	Boolean approved;
 	Double price;
 	byte[] expenseImageData;
@@ -55,6 +55,8 @@ public class ExpenseSubmissionServiceTest {
 		}
 		
 		email = "aran.smith47@mail.dcu.ie";
+		password = "apassword";
+		
 		category = "taxi";
 		currency = "eur";
 		card = "1234";
@@ -87,20 +89,20 @@ public class ExpenseSubmissionServiceTest {
 	
 	@Test
 	public void testValidExpenseSubmission(){
-		expenseSubResponse = expenseSubmissionService.submitExpense(expense);
+		expenseSubResponse = expenseSubmissionService.submitExpense(expense, password);
 		System.out.println(expenseSubResponse.getResponse());
 		assertTrue(expenseSubResponse.isSuccess());
 	}
 	
 	@Test
 	public void testInvalidExpenseSubmission(){
-		expenseSubResponse = expenseSubmissionService.submitExpense(invalidExpense);
+		expenseSubResponse = expenseSubmissionService.submitExpense(invalidExpense, password);
 		assertFalse(expenseSubResponse.isSuccess());
 	}
 	
 	@Test
 	public void testNullSubmission(){
-		expenseSubResponse = expenseSubmissionService.submitExpense(null);
+		expenseSubResponse = expenseSubmissionService.submitExpense(null, password);
 		assertFalse(expenseSubResponse.isSuccess());
 	}
 	
