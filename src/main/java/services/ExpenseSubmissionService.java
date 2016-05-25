@@ -31,7 +31,7 @@ public class ExpenseSubmissionService {
 	}
 	
 	/**
-	 * This class verifies an expense object passed to it and writes image and 
+	 * This method verifies an expense object passed to it and writes image and 
 	 * expense description data to the file system, then it will insert the 
 	 * appropriate information to the database.
 	 * 
