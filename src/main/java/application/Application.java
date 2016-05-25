@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
  * Class used to initiate the Web Service, it identifies where to search for the
  * relevant classes using the \@ComponentScan annotation.
  * 
+ * This is a test for the demo.
+ * 
  * @author Aran
  *
  */
